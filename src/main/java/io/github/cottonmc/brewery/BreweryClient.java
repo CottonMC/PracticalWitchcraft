@@ -8,7 +8,7 @@ public class BreweryClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		// BlockEntityRendererRegistry.INSTANCE.register(ChorusConduitBlockEntity.class, new ChorusConduitRenderer());
+		 BlockEntityRendererRegistry.INSTANCE.register(StoneCauldronEntity.class, new StoneCauldronRenderer());
 
 	}
 }

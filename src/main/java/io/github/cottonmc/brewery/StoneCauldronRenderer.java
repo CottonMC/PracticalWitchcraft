@@ -28,11 +28,11 @@ public class StoneCauldronRenderer extends BlockEntityRenderer<StoneCauldronEnti
 		buffer.begin(GL11.GL_QUADS, VertexFormats.POSITION_UV_LMAP_COLOR);
 		int amount = be.fluid.getFluid(0).getAmount();
 		if (amount > 0) {
-			double height = ((be.fluid.getFluid(0).getAmount() / DropletValues.BLOCK) * 14 / 16f) + 2 / 16f;
-			buffer.vertex(0, height, 0).texture(sprite.getMinU(), sprite.getMinV()).texture(240, 240).color(1f, 1f, 1f, 1f).next();
-			buffer.vertex(0, height, 1).texture(sprite.getMinU(), sprite.getMaxV()).texture(240, 240).color(1f, 1f, 1f, 1f).next();
-			buffer.vertex(1, height, 1).texture(sprite.getMaxU(), sprite.getMaxV()).texture(240, 240).color(1f, 1f, 1f, 1f).next();
-			buffer.vertex(1, height, 0).texture(sprite.getMaxU(), sprite.getMinV()).texture(240, 240).color(1f, 1f, 1f, 1f).next();
+			double height = ((be.fluid.getFluid(0).getAmount() / DropletValues.BLOCK) * 14 / 16f) + 1/16f;
+			buffer.vertex(2/16f, height, 2/16f).texture(sprite.getMinU(), sprite.getMinV()).texture(240, 240).color(1f, 1f, 1f, 1f).next();
+			buffer.vertex(2/16f, height, 14/16f).texture(sprite.getMinU(), sprite.getMaxV()).texture(240, 240).color(1f, 1f, 1f, 1f).next();
+			buffer.vertex(14/16f, height, 14/16f).texture(sprite.getMaxU(), sprite.getMaxV()).texture(240, 240).color(1f, 1f, 1f, 1f).next();
+			buffer.vertex(14/16f, height, 2/16f).texture(sprite.getMaxU(), sprite.getMinV()).texture(240, 240).color(1f, 1f, 1f, 1f).next();
 		}
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		buffer.setOffset(0.0, 0.0, 0.0);
