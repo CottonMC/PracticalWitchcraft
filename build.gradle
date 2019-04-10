@@ -1,0 +1,68 @@
+buildscript {
+	repositories {
+		jcenter()
+		maven {
+			name = 'Fabric'
+			url = 'http://maven.modmuss50.me/'
+		}
+	}
+	dependencies {
+		classpath "net.fabricmc:fabric-loom:0.2.1-SNAPSHOT"
+	}
+}
+
+plugins {
+	id 'java'
+	id 'eclipse'
+	id 'idea'
+}
+
+apply plugin: net.fabricmc.loom.LoomGradlePlugin
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+archivesBaseName = "brewery"
+version = "1.0.0+19w14b"
+
+minecraft {
+	refmapName = 'mixins.brewery.refmap.json'
+}
+
+repositories {
+	mavenCentral()
+	maven {
+		name = "CottonMC";
+		url  = "http://server.bbkr.space:8081/artifactory/libs-snapshot";
+	}
+//	maven {
+//		name = "BuildCraft"
+//		url = "https://mod-buildcraft.com/maven"
+//	}
+}
+
+dependencies {
+	minecraft "com.mojang:minecraft:19w14b"
+	mappings "net.fabricmc:yarn:19w14b.4"
+	modCompile "net.fabricmc:fabric-loader:0.4.0+build.115"
+	modCompile "net.fabricmc:fabric:0.2.6.121"
+	include "net.fabricmc:fabric:0.2.6.121"
+
+	modCompile "io.github.cottonmc:cotton:0.5.0+19w14b-SNAPSHOT"
+	include "io.github.cottonmc:cotton:0.5.0+19w14b-SNAPSHOT"
+	modCompile "io.github.prospector.silk:SilkAPI:1.2.4-41"
+	include "io.github.prospector.silk:SilkAPI:1.2.4-41"
+//	modCompile "alexiil.mc.lib:libblockattributes:0.3.0"
+//	include "alexiil.mc.lib:libblockattributes:0.3.0"
+}
+
+processResources {
+	inputs.property "version", project.version
+	from(sourceSets.main.resources.srcDirs) {
+		include "fabric.mod.json"
+		expand version: project.version
+	}
+	from(sourceSets.main.resources.srcDirs) {
+		exclude "fabric.mod.json"
+	}
+}

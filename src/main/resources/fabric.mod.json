@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "brewery",
+  "version": "$version",
+
+  "name": "Brewery",
+  "icon": "assets/brewery/icon.png",
+  "description": "Smart, capable cauldrons!",
+  "licence": "LGPL v3",
+  "contact": {
+    "sources": "https://github.com/CottonMC/Brewery"
+  },
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "io.github.cottonmc.brewery.Brewery"
+    ],
+    "client": [
+      "io.github.cottonmc.brewery.BreweryClient"
+    ]
+  },
+  "mixins": [
+    "brewery.common.json"
+  ],
+  "requires": {
+    "fabricloader": ">=0.4.0",
+    "fabric": "*",
+    "cotton": "*",
+    "silk": "*"
+  }
+}

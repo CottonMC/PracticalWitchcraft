@@ -1,0 +1,8 @@
+{
+  "required": true,
+  "package": "io.github.cottonmc.brewery.mixins",
+  "refmap": "mixins.brewery.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+  ]
+}
