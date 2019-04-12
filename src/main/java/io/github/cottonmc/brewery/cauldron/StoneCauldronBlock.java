@@ -82,15 +82,15 @@ public class StoneCauldronBlock extends BlockWithEntity implements AttributeProv
 		}
 		if (stack.getItem() instanceof BucketItem) {
 			if (stack.getItem() == Items.BUCKET && fluid.getAmount() >= FluidVolume.BUCKET) {
-				player.setStackInHand(hand, BucketUtil.fillBucketFromFluid(stack, fluid.getRawFluid()));
+				if (!player.isCreative()) player.setStackInHand(hand, BucketUtil.fillBucketFromFluid(stack, fluid.getRawFluid()));
 				drain(world, pos, state, fluid.getRawFluid(), 3);
 				world.playSound(player, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0f, 1.0f);
 				return true;
 			}
 			else if (fluid.isEmpty()) {
+				if (!player.isCreative()) player.setStackInHand(hand, new ItemStack(Items.BUCKET));
 				cauldron.fluid.setInvFluid(0, BucketUtil.getBucketFluid(stack), Simulation.ACTION);
 				world.playSound(player, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0f, 1.0f);
-				player.setStackInHand(hand, new ItemStack(Items.BUCKET));
 				return true;
 			}
 		}

@@ -63,23 +63,23 @@ public class StoneCauldronEntity extends BlockEntity implements Tickable {
 	@Override
 	public void tick() {
 		if (world.isClient || fluid.getInvFluid(0).isEmpty()) return;
-			List<ItemEntity> itemsAbove = getInputItemEntities();
-			if (!itemsAbove.isEmpty()) {
-				boolean soundPlayed = false;
-				for (ItemEntity item : itemsAbove) {
-					ItemStack stack = item.getStack();
-					int index = StoneCauldronBlock.getLastFilledSlot(previousItems);
-					if (index != 7) {
-						if (!soundPlayed) {
-							world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_SPLASH, SoundCategory.BLOCKS, 1.0f, 1.0f);
-							soundPlayed = true;
-						}
-						previousItems.set(index + 1, stack);
-						item.remove();
+		List<ItemEntity> itemsAbove = getInputItemEntities();
+		if (!itemsAbove.isEmpty()) {
+			boolean soundPlayed = false;
+			for (ItemEntity item : itemsAbove) {
+				ItemStack stack = item.getStack();
+				int index = StoneCauldronBlock.getLastFilledSlot(previousItems);
+				if (index != 7) {
+					if (!soundPlayed) {
+						world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_SPLASH, SoundCategory.BLOCKS, 1.0f, 1.0f);
+						soundPlayed = true;
 					}
+					previousItems.set(index + 1, stack);
+					item.remove();
 				}
-				markDirty();
 			}
+			markDirty();
+		}
 	}
 
 	public List<ItemEntity> getInputItemEntities() {

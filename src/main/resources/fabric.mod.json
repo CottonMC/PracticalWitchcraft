@@ -27,6 +27,6 @@
     "fabricloader": ">=0.4.0",
     "fabric": "*",
     "cotton": "*",
-    "silk": "*"
+    "libblockattributes": ">=0.3.4"
   }
 }

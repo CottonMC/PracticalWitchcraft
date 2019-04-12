@@ -23,9 +23,9 @@ public class Brewery implements ModInitializer {
 	public static final String MODID = "brewery";
 
 	public static final Block STONE_CAULDRON = register("stone_cauldron", new StoneCauldronBlock(), ItemGroup.DECORATIONS);
-    public static BlockEntityType<StoneCauldronEntity> STONE_CAULDRON_BE = register("stone_cauldron", StoneCauldronEntity::new);
+	public static BlockEntityType<StoneCauldronEntity> STONE_CAULDRON_BE = register("stone_cauldron", StoneCauldronEntity::new);
 
-    public static StatusEffect IMMUNITY = register("immunity", new BreweryStatusEffect(StatusEffectType.BENEFICIAL, 0x8147b8));
+	public static StatusEffect IMMUNITY = register("immunity", new BreweryStatusEffect(StatusEffectType.NEUTRAL, 0x385DC6));
 
 	@Override
 	public void onInitialize() {
