@@ -43,6 +43,7 @@ public class StoneCauldronEntity extends BlockEntity implements Tickable {
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
+		super.toTag(tag);
 		tag.put("PreviousItems", Inventories.toTag(new CompoundTag(), previousItems));
 		tag.put("Fluid", fluid.toTag());
 		return tag;
@@ -50,6 +51,7 @@ public class StoneCauldronEntity extends BlockEntity implements Tickable {
 
 	@Override
 	public void fromTag(CompoundTag tag) {
+		super.fromTag(tag);
 		Inventories.fromTag(tag.getCompound("PreviousItems"), previousItems);
 		fluid.fromTag(tag.getCompound("Fluid"));
 	}
