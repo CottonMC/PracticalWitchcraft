@@ -1,8 +1,7 @@
-package io.github.cottonmc.brewery;
+package io.github.cottonmc.brewery.cauldron;
 
+import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import com.mojang.blaze3d.platform.GlStateManager;
-import io.github.prospector.silk.fluid.DropletValues;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
@@ -23,12 +22,11 @@ public class StoneCauldronRenderer extends BlockEntityRenderer<StoneCauldronEnti
 		GlStateManager.disableAlphaTest();
 		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 		renderManager.textureManager.bindTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
-		//TODO: change once the fabric fluid renderer PR is merged
-		Sprite sprite = MinecraftClient.getInstance().getSpriteAtlas().getSprite("minecraft:block/water_still");
+		Sprite sprite = MinecraftClient.getInstance().getSpriteAtlas().getSprite(be.fluid.getInvFluid(0).getSprite());
 		buffer.begin(GL11.GL_QUADS, VertexFormats.POSITION_UV_LMAP_COLOR);
-		int amount = be.fluid.getFluid(0).getAmount();
+		int amount = be.fluid.getInvFluid(0).getAmount();
 		if (amount > 0) {
-			double height = ((be.fluid.getFluid(0).getAmount() / DropletValues.BLOCK) * 14 / 16f) + 1/16f;
+			double height = ((be.fluid.getInvFluid(0).getAmount() / (float)FluidVolume.BUCKET) * 14 / 16f) + 1/16f;
 			buffer.vertex(2/16f, height, 2/16f).texture(sprite.getMinU(), sprite.getMinV()).texture(240, 240).color(1f, 1f, 1f, 1f).next();
 			buffer.vertex(2/16f, height, 14/16f).texture(sprite.getMinU(), sprite.getMaxV()).texture(240, 240).color(1f, 1f, 1f, 1f).next();
 			buffer.vertex(14/16f, height, 14/16f).texture(sprite.getMaxU(), sprite.getMaxV()).texture(240, 240).color(1f, 1f, 1f, 1f).next();

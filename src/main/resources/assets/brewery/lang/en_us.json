@@ -1,3 +1,4 @@
 {
-  "block.brewery.stone_cauldron": "Stone Cauldron"
+  "block.brewery.stone_cauldron": "Stone Cauldron",
+  "effect.brewery.immunity": "Immunity"
 }

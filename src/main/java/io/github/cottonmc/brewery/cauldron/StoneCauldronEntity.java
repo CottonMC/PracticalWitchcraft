@@ -1,6 +1,9 @@
-package io.github.cottonmc.brewery;
+package io.github.cottonmc.brewery.cauldron;
 
-import io.github.prospector.silk.fluid.DropletValues;
+import alexiil.mc.lib.attributes.fluid.FixedFluidInvView;
+import alexiil.mc.lib.attributes.fluid.impl.SimpleFixedFluidInv;
+import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
+import io.github.cottonmc.brewery.Brewery;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.ItemEntity;
@@ -21,12 +24,16 @@ import java.util.stream.Collectors;
 public class StoneCauldronEntity extends BlockEntity implements Tickable {
 	static VoxelShape ABOVE_SHAPE = Block.createCuboidShape(0.0D, 16.0D, 0.0D, 16.0D, 32.0D, 16.0D);
 
-	public SimpleFluidContainer fluid = new SimpleFluidContainer(1, DropletValues.BLOCK);
+	public SimpleFixedFluidInv fluid = new SimpleFixedFluidInv(1, FluidVolume.BUCKET);
 	public DefaultedList<ItemStack> previousItems = DefaultedList.create(8, ItemStack.EMPTY);
 
 	public StoneCauldronEntity() {
 		super(Brewery.STONE_CAULDRON_BE);
-		fluid.listen(this::markDirty);
+		fluid.addListener(this::listen, this::markDirty);
+	}
+
+	private void listen(FixedFluidInvView fixedFluidInvView, int i, FluidVolume fluidVolume, FluidVolume fluidVolume1) {
+		markDirty();
 	}
 
 	public void craft() {
@@ -44,7 +51,7 @@ public class StoneCauldronEntity extends BlockEntity implements Tickable {
 	@Override
 	public void fromTag(CompoundTag tag) {
 		Inventories.fromTag(tag.getCompound("PreviousItems"), previousItems);
-		fluid.fromTag(tag.getTag("Fluid"));
+		fluid.fromTag(tag.getCompound("Fluid"));
 	}
 
 	@Override
@@ -55,7 +62,7 @@ public class StoneCauldronEntity extends BlockEntity implements Tickable {
 
 	@Override
 	public void tick() {
-		if (world.isClient || fluid.getFluid(0).isEmpty()) return;
+		if (world.isClient || fluid.getInvFluid(0).isEmpty()) return;
 			List<ItemEntity> itemsAbove = getInputItemEntities();
 			if (!itemsAbove.isEmpty()) {
 				boolean soundPlayed = false;
@@ -64,7 +71,7 @@ public class StoneCauldronEntity extends BlockEntity implements Tickable {
 					int index = StoneCauldronBlock.getLastFilledSlot(previousItems);
 					if (index != 7) {
 						if (!soundPlayed) {
-							world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_SPLASH, SoundCategory.BLOCK, 1.0f, 1.0f);
+							world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_SPLASH, SoundCategory.BLOCKS, 1.0f, 1.0f);
 							soundPlayed = true;
 						}
 						previousItems.set(index + 1, stack);

@@ -1,8 +1,9 @@
 package io.github.cottonmc.brewery;
 
+import io.github.cottonmc.brewery.cauldron.StoneCauldronEntity;
+import io.github.cottonmc.brewery.cauldron.StoneCauldronRenderer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.render.BlockEntityRendererRegistry;
-import net.fabricmc.fabric.api.client.render.EntityRendererRegistry;
 
 public class BreweryClient implements ClientModInitializer {
 
