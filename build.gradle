@@ -7,7 +7,7 @@ buildscript {
 		}
 	}
 	dependencies {
-		classpath "net.fabricmc:fabric-loom:0.2.1-SNAPSHOT"
+		classpath "net.fabricmc:fabric-loom:0.2.2-SNAPSHOT"
 	}
 }
 
@@ -23,7 +23,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 archivesBaseName = "brewery"
-version = "1.0.0+1.14pre1"
+version = "1.0.0+1.14.1"
 
 minecraft {
 	refmapName = 'mixins.brewery.refmap.json'
@@ -32,26 +32,36 @@ minecraft {
 repositories {
 	mavenCentral()
 	maven {
-		name = "CottonMC"
+		name = "CottonMC Snapshot"
 		url  = "http://server.bbkr.space:8081/artifactory/libs-snapshot"
+	}
+	maven {
+		name = "CottonMC Release"
+		url  = "http://server.bbkr.space:8081/artifactory/libs-release"
 	}
 	maven {
 		name = "BuildCraft"
 		url = "https://mod-buildcraft.com/maven"
 	}
+	maven {
+		name = "CurseForge"
+		url = "https://minecraft.curseforge.com/api/maven"
+	}
+
 }
 
 dependencies {
-	minecraft "com.mojang:minecraft:1.14 Pre-Release 1"
-	mappings "net.fabricmc:yarn:1.14 Pre-Release 1+build.6"
-	modCompile "net.fabricmc:fabric-loader:0.4.0+build.121"
-	modCompile "net.fabricmc:fabric:0.2.7+build.122"
-	include "net.fabricmc:fabric:0.2.7+build.122"
+	minecraft "com.mojang:minecraft:1.14.1"
+	mappings "net.fabricmc:yarn:1.14.1+build.5"
+	modCompile "net.fabricmc:fabric-loader:0.4.7+build.147"
+	modCompile "net.fabricmc.fabric-api:fabric-api:0.3.0-pre+build.156"
+	include "net.fabricmc.fabric-api:fabric-api:0.3.0-pre+build.156"
 
-	modCompile "io.github.cottonmc:cotton:0.5.0+19w14b-SNAPSHOT"
-	include "io.github.cottonmc:cotton:0.5.0+19w14b-SNAPSHOT"
-	modCompile "alexiil.mc.lib:libblockattributes:0.3.4"
-	include "alexiil.mc.lib:libblockattributes:0.3.4"
+//	modCompile "io.github.cottonmc:SkillCheck:1.0.6+1.14.1"
+	modCompile "io.github.cottonmc:cotton:0.6.7+1.14.1-SNAPSHOT"
+	include "io.github.cottonmc:cotton:0.6.7+1.14.1-SNAPSHOT"
+	modCompile "alexiil.mc.lib:libblockattributes:0.4.2"
+	include "alexiil.mc.lib:libblockattributes:0.4.2"
 }
 
 processResources {

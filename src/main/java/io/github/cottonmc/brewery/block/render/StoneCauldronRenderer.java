@@ -1,7 +1,8 @@
-package io.github.cottonmc.brewery.cauldron;
+package io.github.cottonmc.brewery.block.render;
 
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import com.mojang.blaze3d.platform.GlStateManager;
+import io.github.cottonmc.brewery.block.entity.StoneCauldronEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;

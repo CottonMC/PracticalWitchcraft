@@ -1,9 +1,11 @@
-package io.github.cottonmc.brewery.cauldron;
+package io.github.cottonmc.brewery.block.entity;
 
 import alexiil.mc.lib.attributes.fluid.FixedFluidInvView;
 import alexiil.mc.lib.attributes.fluid.impl.SimpleFixedFluidInv;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import io.github.cottonmc.brewery.Brewery;
+import io.github.cottonmc.brewery.block.BreweryBlocks;
+import io.github.cottonmc.brewery.block.StoneCauldronBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.ItemEntity;
@@ -28,7 +30,7 @@ public class StoneCauldronEntity extends BlockEntity implements Tickable {
 	public DefaultedList<ItemStack> previousItems = DefaultedList.create(8, ItemStack.EMPTY);
 
 	public StoneCauldronEntity() {
-		super(Brewery.STONE_CAULDRON_BE);
+		super(BreweryBlocks.STONE_CAULDRON_BE);
 		fluid.addListener(this::listen, this::markDirty);
 	}
 

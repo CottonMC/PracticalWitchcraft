@@ -1,7 +1,7 @@
 package io.github.cottonmc.brewery;
 
-import io.github.cottonmc.brewery.cauldron.StoneCauldronEntity;
-import io.github.cottonmc.brewery.cauldron.StoneCauldronRenderer;
+import io.github.cottonmc.brewery.block.entity.StoneCauldronEntity;
+import io.github.cottonmc.brewery.block.render.StoneCauldronRenderer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.render.BlockEntityRendererRegistry;
 

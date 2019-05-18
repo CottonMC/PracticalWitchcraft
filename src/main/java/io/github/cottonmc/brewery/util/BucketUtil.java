@@ -1,4 +1,4 @@
-package io.github.cottonmc.brewery;
+package io.github.cottonmc.brewery.util;
 
 import alexiil.mc.lib.attributes.fluid.volume.*;
 import net.minecraft.fluid.Fluid;
@@ -26,6 +26,6 @@ public class BucketUtil {
 	public static FluidVolume getBucketFluid(ItemStack stack) {
 		Fluid fluid = BUCKET_FLUIDS.get(stack.getItem());
 		FluidKey key = FluidKeys.get(fluid);
-		return new NormalFluidVolume(NormalFluidKey.builder(fluid, key.spriteId, key.name).build(), FluidVolume.BUCKET);
+		return NormalFluidVolume.create(NormalFluidKey.builder(fluid, key.spriteId, key.name).build(), FluidVolume.BUCKET);
 	}
 }

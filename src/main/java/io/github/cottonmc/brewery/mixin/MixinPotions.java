@@ -1,6 +1,6 @@
 package io.github.cottonmc.brewery.mixin;
 
-import io.github.cottonmc.brewery.Brewery;
+import io.github.cottonmc.brewery.effect.BreweryEffects;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.Potions;
@@ -16,7 +16,7 @@ public class MixinPotions {
 	@Shadow
 	@Mutable
 	@Final
-	public static Potion MUNDANE = reregister("mundane", new Potion(new StatusEffectInstance(Brewery.IMMUNITY, 3600)));
+	public static Potion MUNDANE = reregister("mundane", new Potion(new StatusEffectInstance(BreweryEffects.IMMUNITY, 3600)));
 
 	private static Potion reregister(String name, Potion potion) {
 		return Registry.register(Registry.POTION, name, potion);

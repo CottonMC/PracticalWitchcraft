@@ -1,19 +1,20 @@
-package io.github.cottonmc.brewery.cauldron;
+package io.github.cottonmc.brewery.block;
 
 import alexiil.mc.lib.attributes.AttributeList;
 import alexiil.mc.lib.attributes.AttributeProvider;
 import alexiil.mc.lib.attributes.Simulation;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import alexiil.mc.lib.attributes.fluid.volume.NormalFluidVolume;
-import io.github.cottonmc.brewery.BucketUtil;
+import io.github.cottonmc.brewery.util.BucketUtil;
+import io.github.cottonmc.brewery.block.entity.StoneCauldronEntity;
 import io.github.cottonmc.cotton.cauldron.Cauldron;
 import io.github.cottonmc.cotton.cauldron.CauldronBehavior;
 import io.github.cottonmc.cotton.cauldron.CauldronContext;
 import net.fabricmc.fabric.api.block.FabricBlockSettings;
-import net.fabricmc.fabric.api.tag.FabricItemTags;
+import net.fabricmc.fabric.api.tools.FabricToolTags;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.VerticalEntityPosition;
+import net.minecraft.entity.EntityContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.BucketItem;
@@ -39,11 +40,11 @@ public class StoneCauldronBlock extends BlockWithEntity implements AttributeProv
 	public static final VoxelShape OUTLINE_SHAPE = VoxelShapes.combineAndSimplify(VoxelShapes.fullCube(), VoxelShapes.union(createCuboidShape(0.0D, 0.0D, 4.0D, 16.0D, 3.0D, 12.0D), new VoxelShape[]{createCuboidShape(4.0D, 0.0D, 0.0D, 12.0D, 3.0D, 16.0D), createCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 3.0D, 14.0D), RAY_TRACE_SHAPE}), BooleanBiFunction.ONLY_FIRST);
 
 	public StoneCauldronBlock() {
-		super(FabricBlockSettings.of(Material.STONE).breakByTool(FabricItemTags.PICKAXES).strength(6.0f, 6.0f).build());
+		super(FabricBlockSettings.of(Material.STONE).breakByTool(FabricToolTags.PICKAXES).strength(6.0f, 6.0f).build());
 	}
 
 	@Override
-	public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, VerticalEntityPosition entityPos) {
+	public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, EntityContext entityPos) {
 		return OUTLINE_SHAPE;
 	}
 
@@ -87,7 +88,8 @@ public class StoneCauldronBlock extends BlockWithEntity implements AttributeProv
 				world.playSound(player, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0f, 1.0f);
 				return true;
 			}
-			else if (fluid.isEmpty()) {
+			//TODO: remove restriction to water bucket only once renderer is fixed
+			else if (fluid.isEmpty() && stack.getItem() == Items.WATER_BUCKET) {
 				if (!player.isCreative()) player.setStackInHand(hand, new ItemStack(Items.BUCKET));
 				cauldron.fluid.setInvFluid(0, BucketUtil.getBucketFluid(stack), Simulation.ACTION);
 				world.playSound(player, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0f, 1.0f);
@@ -150,7 +152,6 @@ public class StoneCauldronBlock extends BlockWithEntity implements AttributeProv
 		if (be instanceof StoneCauldronEntity) {
 			StoneCauldronEntity cauldron = (StoneCauldronEntity) be;
 			to.offer(cauldron.fluid, OUTLINE_SHAPE);
-			to.offer(cauldron.fluid.getStatistics(), OUTLINE_SHAPE);
 			to.offer(cauldron.fluid.getInsertable(), OUTLINE_SHAPE);
 			to.offer(cauldron.fluid.getExtractable(), OUTLINE_SHAPE);
 			// cauldron.addAttributes(to);

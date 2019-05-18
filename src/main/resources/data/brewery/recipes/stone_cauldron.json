@@ -13,7 +13,7 @@
       "item": "minecraft:smooth_stone_slab"
     },
     "|": {
-      "item": "minecraft:stone_wall"
+      "item": "minecraft:cobblestone_wall"
     }
   },
   "result": {
