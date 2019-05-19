@@ -3,7 +3,6 @@ package io.github.cottonmc.brewery.block.entity;
 import alexiil.mc.lib.attributes.fluid.FixedFluidInvView;
 import alexiil.mc.lib.attributes.fluid.impl.SimpleFixedFluidInv;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
-import io.github.cottonmc.brewery.Brewery;
 import io.github.cottonmc.brewery.block.BreweryBlocks;
 import io.github.cottonmc.brewery.block.StoneCauldronBlock;
 import net.minecraft.block.Block;

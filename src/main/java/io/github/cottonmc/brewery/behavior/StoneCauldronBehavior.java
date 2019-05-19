@@ -1,4 +1,4 @@
-package io.github.cottonmc.brewery.cauldron;
+package io.github.cottonmc.brewery.behavior;
 
 public class StoneCauldronBehavior {
 	public static void init() {

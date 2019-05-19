@@ -7,7 +7,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class BreweryEffects {
-	public static StatusEffect IMMUNITY = register("immunity", new BreweryStatusEffect(StatusEffectType.NEUTRAL, 0x385DC6));
+	public static StatusEffect IMMUNITY = register("immunity", new ImmunityStatusEffect());
 
 	public static void init() {
 	}

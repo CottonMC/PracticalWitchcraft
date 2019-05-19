@@ -17,10 +17,10 @@ import java.util.function.Supplier;
 
 public class BreweryBlocks {
 
-	public static final Block STONE_CAULDRON = register("stone_cauldron", new StoneCauldronBlock(), ItemGroup.DECORATIONS);
+	public static final Block STONE_CAULDRON = register("stone_cauldron", new StoneCauldronBlock(), BreweryItems.BREWERY_GROUP);
 	public static final BlockEntityType<StoneCauldronEntity> STONE_CAULDRON_BE = register("stone_cauldron", StoneCauldronEntity::new, STONE_CAULDRON);
 
-	public static final Block INCENSE_BURNER = register("incense_burner", new IncenseBurnerBlock(), ItemGroup.DECORATIONS);
+	public static final Block INCENSE_BURNER = register("incense_burner", new IncenseBurnerBlock(), BreweryItems.BREWERY_GROUP);
 	public static final BlockEntityType<IncenseBurnerEntity> INCENSE_BURNER_BE = register("incense_burner", IncenseBurnerEntity::new, INCENSE_BURNER);
 
 	public static void init() {

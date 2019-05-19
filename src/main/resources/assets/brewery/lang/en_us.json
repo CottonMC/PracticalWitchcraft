@@ -1,4 +1,13 @@
 {
   "block.brewery.stone_cauldron": "Stone Cauldron",
-  "effect.brewery.immunity": "Immunity"
+  "block.brewery.incense_burner": "Incense Burner",
+
+  "item.brewery.purging_incense": "Purging Incense",
+
+  "itemGroup.brewery.main_group": "Brewery",
+
+  "effect.brewery.immunity": "Immunity",
+
+  "msg.brewery.karma.gain": "You feel fortune smile upon you.",
+  "msg.brewery.karma.lose": "You feel misfortune creeping in on you."
 }

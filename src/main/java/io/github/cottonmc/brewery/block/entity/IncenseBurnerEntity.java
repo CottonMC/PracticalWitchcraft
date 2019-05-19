@@ -1,9 +1,12 @@
 package io.github.cottonmc.brewery.block.entity;
 
 import io.github.cottonmc.brewery.block.BreweryBlocks;
+import io.github.cottonmc.brewery.item.BreweryItems;
 import io.github.cottonmc.brewery.util.BreweryNetworking;
 import net.fabricmc.fabric.api.server.PlayerStream;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.network.packet.EntityPotionEffectS2CPacket;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -31,9 +34,21 @@ public class IncenseBurnerEntity extends BlockEntity {
 		world.playSound(null, pos, SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.BLOCKS, 1.0f, 1.0f);
 		for (Object obj : PlayerStream.around(this.world, this.pos, 5d).toArray()) {
 			PlayerEntity player = (PlayerEntity)obj;
-			//put code for different incense types here
-			player.removePotionEffect(StatusEffects.BAD_OMEN);
-			BreweryNetworking.removeEffect((ServerPlayerEntity)player, StatusEffects.BAD_OMEN);
+			//TODO: make fancy with an API to add incense sticks or something
+			if (incense.getItem() == BreweryItems.PURGING_INCENSE) {
+				if (player.hasStatusEffect(StatusEffects.BAD_OMEN)) {
+					StatusEffectInstance inst = player.getStatusEffect(StatusEffects.BAD_OMEN);
+					int level = inst.getAmplifier();
+					int time = inst.getDuration();
+					player.removePotionEffect(StatusEffects.BAD_OMEN);
+					BreweryNetworking.removeEffect((ServerPlayerEntity) player, StatusEffects.BAD_OMEN);
+					if (level != 0) {
+						StatusEffectInstance newInst = new StatusEffectInstance(StatusEffects.BAD_OMEN, time, level - 1, false, false, true);
+						player.addPotionEffect(newInst);
+						((ServerPlayerEntity) player).networkHandler.sendPacket(new EntityPotionEffectS2CPacket(player.getEntityId(), newInst));
+					}
+				}
+			}
 		}
 		purges--;
 		if (purges > 0) {

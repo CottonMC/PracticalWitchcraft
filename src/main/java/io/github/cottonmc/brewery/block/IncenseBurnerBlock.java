@@ -2,6 +2,7 @@ package io.github.cottonmc.brewery.block;
 
 import io.github.cottonmc.brewery.block.entity.IncenseBurnerEntity;
 import io.github.cottonmc.brewery.item.BreweryItems;
+import io.github.cottonmc.brewery.item.IncenseStickItem;
 import net.fabricmc.fabric.api.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
@@ -49,7 +50,7 @@ public class IncenseBurnerBlock extends Block implements BlockEntityProvider {
 				return true;
 			}
 			//eventually change to IncenseItem or whatever
-		} else if (handStack.getItem() == BreweryItems.PURGING_INCENSE) {
+		} else if (handStack.getItem() instanceof IncenseStickItem) {
 			be.setIncense(handStack);
 			handStack.subtractAmount(1);
 			world.playSound(null, pos, SoundEvents.ENTITY_ITEM_FRAME_ADD_ITEM, SoundCategory.BLOCKS, 1.0f, 1.0f);
