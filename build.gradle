@@ -22,11 +22,11 @@ apply plugin: net.fabricmc.loom.LoomGradlePlugin
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-archivesBaseName = "brewery"
+archivesBaseName = "witchcraft"
 version = "1.0.0+1.14.1"
 
 minecraft {
-	refmapName = 'mixins.brewery.refmap.json'
+	refmapName = 'mixins.witchcraft.refmap.json'
 }
 
 repositories {

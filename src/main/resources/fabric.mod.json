@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "id": "brewery",
+  "id": "witchcraft",
   "version": "$version",
 
-  "name": "Brewery",
-  "icon": "assets/brewery/icon.png",
-  "description": "Smart, capable cauldrons!",
+  "name": "Practical Witchcraft",
+  "icon": "assets/witchcraft/icon.png",
+  "description": "Realistic magic to help you get places",
   "licence": "LGPL v3",
   "contact": {
     "sources": "https://github.com/CottonMC/Brewery"
@@ -14,14 +14,14 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "io.github.cottonmc.brewery.Brewery"
+      "io.github.cottonmc.witchcraft.Witchcraft"
     ],
     "client": [
-      "io.github.cottonmc.brewery.BreweryClient"
+      "io.github.cottonmc.witchcraft.WitchcraftClient"
     ]
   },
   "mixins": [
-    "brewery.common.json"
+    "witchcraft.common.json"
   ],
   "requires": {
     "fabricloader": ">=0.4.0",

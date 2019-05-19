@@ -1,0 +1,13 @@
+{
+  "block.witchcraft.stone_cauldron": "Stone Cauldron",
+  "block.witchcraft.incense_burner": "Incense Burner",
+
+  "item.witchcraft.purging_incense": "Purging Incense",
+
+  "itemGroup.witchcraft.main_group": "Practical Witchcraft",
+
+  "effect.witchcraft.immunity": "Immunity",
+
+  "msg.witchcraft.karma.gain": "You feel fortune smile upon you.",
+  "msg.witchcraft.karma.lose": "You feel misfortune creeping in on you."
+}
