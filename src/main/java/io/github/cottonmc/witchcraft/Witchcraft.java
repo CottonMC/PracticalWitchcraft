@@ -4,6 +4,7 @@ import io.github.cottonmc.witchcraft.block.WitchcraftBlocks;
 import io.github.cottonmc.witchcraft.effect.WitchcraftEffects;
 import io.github.cottonmc.witchcraft.item.WitchcraftItems;
 import io.github.cottonmc.skillcheck.api.traits.ClassManager;
+import io.github.cottonmc.witchcraft.recipe.WitchcraftRecipes;
 import io.github.cottonmc.witchcraft.util.WitchcraftNetworking;
 import io.github.cottonmc.witchcraft.util.BucketUtil;
 import net.fabricmc.api.ModInitializer;
@@ -20,6 +21,7 @@ public class Witchcraft implements ModInitializer {
 	public void onInitialize() {
 		WitchcraftItems.init();
 		WitchcraftBlocks.init();
+		WitchcraftRecipes.init();
 		WitchcraftEffects.init();
 		WitchcraftNetworking.init();
 		BucketUtil.registerFluidBucket(Fluids.WATER, Items.WATER_BUCKET);

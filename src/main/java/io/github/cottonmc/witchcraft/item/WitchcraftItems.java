@@ -10,12 +10,14 @@ import net.minecraft.util.registry.Registry;
 
 public class WitchcraftItems {
 
-	public static Item PURGING_INCENSE;
+	public static Item BROOMSTICK;
 
-	public static final ItemGroup BREWERY_GROUP = FabricItemGroupBuilder.build(new Identifier(Witchcraft.MODID, "main_group"), () -> new ItemStack(PURGING_INCENSE));
+	public static final ItemGroup BREWERY_GROUP = FabricItemGroupBuilder.build(new Identifier(Witchcraft.MODID, "main_group"), () -> new ItemStack(BROOMSTICK));
+
+	public static Item PURGING_INCENSE = register("purging_incense", new IncenseStickItem());
 
 	public static void init() {
-		PURGING_INCENSE = register("purging_incense", new IncenseStickItem());
+		BROOMSTICK = register("broomstick", new Item(new Item.Settings().itemGroup(BREWERY_GROUP).stackSize(1)));
 	}
 
 	public static Item register(String name, Item item) {

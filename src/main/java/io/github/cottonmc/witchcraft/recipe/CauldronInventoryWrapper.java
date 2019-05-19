@@ -1,11 +1,13 @@
-package io.github.cottonmc.witchcraft.behavior;
+package io.github.cottonmc.witchcraft.recipe;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.RecipeFinder;
+import net.minecraft.recipe.RecipeInputProvider;
 import net.minecraft.util.DefaultedList;
 
-public class CauldronInventoryWrapper implements Inventory {
+public class CauldronInventoryWrapper implements Inventory, RecipeInputProvider {
 	private DefaultedList<ItemStack> items;
 
 	public CauldronInventoryWrapper(DefaultedList<ItemStack> items) {
@@ -19,7 +21,10 @@ public class CauldronInventoryWrapper implements Inventory {
 
 	@Override
 	public boolean isInvEmpty() {
-		return !items.isEmpty();
+		for (ItemStack stack : items) {
+			if (!stack.isEmpty()) return false;
+		}
+		return true;
 	}
 
 	@Override
@@ -55,5 +60,12 @@ public class CauldronInventoryWrapper implements Inventory {
 	@Override
 	public void clear() {
 
+	}
+
+	@Override
+	public void provideRecipeInputs(RecipeFinder finder) {
+		for (ItemStack stack : items) {
+			finder.addNormalItem(stack);
+		}
 	}
 }
