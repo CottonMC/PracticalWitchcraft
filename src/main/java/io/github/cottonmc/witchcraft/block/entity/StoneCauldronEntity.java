@@ -38,7 +38,9 @@ public class StoneCauldronEntity extends BlockEntity implements Tickable {
 	}
 
 	public void craft() {
-		previousItems.clear();
+		for (ItemStack stack : previousItems) {
+			stack.subtractAmount(1);
+		}
 		markDirty();
 	}
 
@@ -70,9 +72,11 @@ public class StoneCauldronEntity extends BlockEntity implements Tickable {
 		if (!itemsAbove.isEmpty()) {
 			boolean soundPlayed = false;
 			for (ItemEntity item : itemsAbove) {
+				if (item.getScoreboardTags().contains("NoCauldronCollect")) continue;
 				ItemStack stack = item.getStack();
+				stack.subtractAmount(1);
 				int index = StoneCauldronBlock.getLastFilledSlot(previousItems);
-				if (index != 7) {
+				if (index < 7) {
 					if (!soundPlayed) {
 						world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_SPLASH, SoundCategory.BLOCKS, 1.0f, 1.0f);
 						soundPlayed = true;
