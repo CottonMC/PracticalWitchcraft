@@ -27,11 +27,12 @@ public class WitchcraftRecipes {
 				(ctx) -> ctx.getStack().getItem() == WitchcraftItems.BROOMSTICK
 						&& ctx.getFluid() == Fluids.WATER
 						&& ctx.getLevel() >= 1
-						&& ctx.getWorld().getServer().getRecipeManager().getFirstMatch(WitchcraftRecipes.CAULDRON,
+						&& ctx.getWorld().getRecipeManager().getFirstMatch(WitchcraftRecipes.CAULDRON,
 						new CauldronInventoryWrapper(ctx.getPreviousItems()), ctx.getWorld()).isPresent(),
 				(ctx -> {
+					System.out.println("Crafting!");
 					PlayerEntity player = ctx.getPlayer();
-					CauldronRecipe recipe = ctx.getWorld().getServer().getRecipeManager().getFirstMatch(WitchcraftRecipes.CAULDRON,
+					CauldronRecipe recipe = ctx.getWorld().getRecipeManager().getFirstMatch(WitchcraftRecipes.CAULDRON,
 							new CauldronInventoryWrapper(ctx.getPreviousItems()), ctx.getWorld()).get();
 					ItemStack result = recipe.output;
 					if (player != null) {

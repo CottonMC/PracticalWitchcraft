@@ -1,0 +1,21 @@
+{
+  "type": "witchcraft:cauldron",
+  "ingredients": [
+    {
+      "item": "minecraft:poppy"
+    },
+    {
+      "item": "minecraft:black_dye"
+    },
+    {
+      "item": "minecraft:fermented_spider_eye"
+    },
+    {
+      "item": "minecraft:glistering_melon_slice"
+    }
+  ],
+  "result": {
+    "item": "minecraft:wither_rose",
+    "count": 1
+  }
+}

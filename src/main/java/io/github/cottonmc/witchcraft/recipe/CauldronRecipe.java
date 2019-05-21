@@ -3,17 +3,16 @@ package io.github.cottonmc.witchcraft.recipe;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.*;
+import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-import java.util.List;
-
 public class CauldronRecipe implements Recipe<Inventory> {
 	Identifier id;
-	List<Ingredient> inputs;
+	DefaultedList<Ingredient> inputs;
 	ItemStack output;
 
-	public CauldronRecipe(Identifier id, ItemStack output, List<Ingredient> inputs) {
+	public CauldronRecipe(Identifier id, ItemStack output, DefaultedList<Ingredient> inputs) {
 		this.id = id;
 		this.inputs = inputs;
 		this.output = output;
@@ -63,5 +62,10 @@ public class CauldronRecipe implements Recipe<Inventory> {
 	@Override
 	public RecipeType<?> getType() {
 		return WitchcraftRecipes.CAULDRON;
+	}
+
+	@Override
+	public DefaultedList<Ingredient> getPreviewInputs() {
+		return inputs;
 	}
 }

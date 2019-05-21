@@ -70,8 +70,9 @@ public class StoneCauldronBlock extends BlockWithEntity implements AttributeProv
 
 	@Override
 	public boolean activate(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+		if (world.isClient() || !(world.getBlockEntity(pos) instanceof StoneCauldronEntity)) return true;
 		ItemStack stack = player.getStackInHand(hand);
-		StoneCauldronEntity cauldron = (StoneCauldronEntity)world.getBlockEntity(pos);
+		StoneCauldronEntity cauldron = (StoneCauldronEntity) world.getBlockEntity(pos);
 		FluidVolume fluid = cauldron.fluid.getInvFluid(0);
 		if (stack.isEmpty() && !(cauldron.previousItems.isEmpty()) && player.isSneaking()) {
 			int index = getLastFilledSlot(cauldron.previousItems);
@@ -83,16 +84,17 @@ public class StoneCauldronBlock extends BlockWithEntity implements AttributeProv
 		}
 		if (stack.getItem() instanceof BucketItem) {
 			if (stack.getItem() == Items.BUCKET && fluid.getAmount() >= FluidVolume.BUCKET) {
-				if (!player.isCreative()) player.setStackInHand(hand, BucketUtil.fillBucketFromFluid(stack, fluid.getRawFluid()));
+				if (!player.isCreative())
+					player.setStackInHand(hand, BucketUtil.fillBucketFromFluid(stack, fluid.getRawFluid()));
 				drain(world, pos, state, fluid.getRawFluid(), 3);
-				world.playSound(player, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0f, 1.0f);
+				world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0f, 1.0f);
 				return true;
 			}
 			//TODO: remove restriction to water bucket only once renderer is fixed
 			else if (fluid.isEmpty() && stack.getItem() == Items.WATER_BUCKET) {
 				if (!player.isCreative()) player.setStackInHand(hand, new ItemStack(Items.BUCKET));
 				cauldron.fluid.setInvFluid(0, BucketUtil.getBucketFluid(stack), Simulation.ACTION);
-				world.playSound(player, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0f, 1.0f);
+				world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0f, 1.0f);
 				return true;
 			}
 		}

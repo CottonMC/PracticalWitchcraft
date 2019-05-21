@@ -16,7 +16,7 @@ public class CauldronRecipeSerializer implements RecipeSerializer<CauldronRecipe
 	@Override
 	public CauldronRecipe read(Identifier id, JsonObject json) {
 		DefaultedList<Ingredient> ingredients = getIngredients(JsonHelper.getArray(json, "ingredients"));
-		if (ingredients.isEmpty()) throw new JsonParseException("No base ingredients for meal!");
+		if (ingredients.isEmpty()) throw new JsonParseException("No ingredients for cauldron recipe!");
 		else {
 			ItemStack result = ShapedRecipe.getItemStack(JsonHelper.getObject(json, "result"));
 			return new CauldronRecipe(id,  result, ingredients);
