@@ -1,6 +1,6 @@
 package io.github.cottonmc.witchcraft.mixin;
 
-import io.github.cottonmc.witchcraft.karma.KarmaManager;
+import io.github.cottonmc.witchcraft.fortune.FortuneManager;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.PatrolEntity;
@@ -23,7 +23,7 @@ public abstract class MixinRaiderEntity extends PatrolEntity {
 	@Inject(method = "onDeath", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;addPotionEffect(Lnet/minecraft/entity/effect/StatusEffectInstance;)Z"))
 	private void affectKarma(DamageSource source, CallbackInfo ci) {
 		if (source.getAttacker() instanceof PlayerEntity) {
-			KarmaManager.shiftKarma((PlayerEntity)source.getAttacker(), -5, true);
+			FortuneManager.shiftFortune((PlayerEntity)source.getAttacker(), 5, true);
 		}
 	}
 

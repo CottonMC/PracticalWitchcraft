@@ -1,6 +1,7 @@
 package io.github.cottonmc.witchcraft.block.entity;
 
 import io.github.cottonmc.witchcraft.block.WitchcraftBlocks;
+import io.github.cottonmc.witchcraft.item.IncenseStickItem;
 import io.github.cottonmc.witchcraft.item.WitchcraftItems;
 import io.github.cottonmc.witchcraft.util.WitchcraftNetworking;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
@@ -27,7 +28,7 @@ public class IncenseBurnerEntity extends BlockEntity implements BlockEntityClien
 
 	public void light() {
 		purges = 6;
-		world.getBlockTickScheduler().schedule(pos, WitchcraftBlocks.INCENSE_BURNER, 200);
+		world.getBlockTickScheduler().schedule(pos, WitchcraftBlocks.INCENSE_BURNER, 100);
 		markDirty();
 	}
 
@@ -36,24 +37,14 @@ public class IncenseBurnerEntity extends BlockEntity implements BlockEntityClien
 		for (Object obj : PlayerStream.around(this.world, this.pos, 5d).toArray()) {
 			PlayerEntity player = (PlayerEntity)obj;
 			//TODO: make fancy with an API to add incense sticks or something
-			if (incense.getItem() == WitchcraftItems.PURGING_INCENSE) {
-				if (player.hasStatusEffect(StatusEffects.BAD_OMEN)) {
-					StatusEffectInstance inst = player.getStatusEffect(StatusEffects.BAD_OMEN);
-					int level = inst.getAmplifier();
-					int time = inst.getDuration();
-					player.removePotionEffect(StatusEffects.BAD_OMEN);
-					WitchcraftNetworking.removeEffect((ServerPlayerEntity) player, StatusEffects.BAD_OMEN);
-					if (level != 0) {
-						StatusEffectInstance newInst = new StatusEffectInstance(StatusEffects.BAD_OMEN, time, level - 1, false, false, true);
-						player.addPotionEffect(newInst);
-						((ServerPlayerEntity) player).networkHandler.sendPacket(new EntityPotionEffectS2CPacket(player.getEntityId(), newInst));
-					}
-				}
+			if (incense.getItem() instanceof IncenseStickItem) {
+				IncenseStickItem stick = (IncenseStickItem) incense.getItem();
+				stick.getAction().purge(player);
 			}
 		}
 		purges--;
 		if (purges > 0) {
-			world.getBlockTickScheduler().schedule(pos, WitchcraftBlocks.INCENSE_BURNER, 200);
+			world.getBlockTickScheduler().schedule(pos, WitchcraftBlocks.INCENSE_BURNER, 100);
 		} else {
 			incense.subtractAmount(1);
 		}

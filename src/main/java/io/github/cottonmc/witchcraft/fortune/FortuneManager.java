@@ -1,4 +1,4 @@
-package io.github.cottonmc.witchcraft.karma;
+package io.github.cottonmc.witchcraft.fortune;
 
 import com.raphydaphy.crochet.data.PlayerData;
 import io.github.cottonmc.witchcraft.Witchcraft;
@@ -11,25 +11,25 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-public class KarmaManager {
-	public static void shiftKarma(PlayerEntity player, int amount) {
-		shiftKarma(player, amount, false);
+public class FortuneManager {
+	public static void shiftFortune(PlayerEntity player, int amount) {
+		shiftFortune(player, amount, false);
 	}
 
-	public static void shiftKarma(PlayerEntity player, int amount, boolean passive) {
+	public static void shiftFortune(PlayerEntity player, int amount, boolean passive) {
 		if (amount == 0) return;
 		CompoundTag tag = PlayerData.get(player, Witchcraft.MODID);
 		int karma;
-		if (!tag.containsKey("Karma", NbtType.INT)) {
+		if (!tag.containsKey("Fortune", NbtType.INT)) {
 			karma = amount;
-			tag.putInt("Karma", amount);
+			tag.putInt("Fortune", amount);
 		} else {
-			karma = tag.getInt("Karma");
+			karma = tag.getInt("Fortune");
 			karma += amount;
 		}
-		tag.putInt("Karma", karma);
+		tag.putInt("Fortune", karma);
 		PlayerData.markDirty(player);
-		player.addChatMessage(new TranslatableComponent("msg.witchcraft.karma." + (amount > 0? "gain" : "lose")), true);
+		player.addChatMessage(new TranslatableComponent("msg.witchcraft.fortune." + (amount > 0? "gain" : "lose")), true);
 		if (passive) return;
 		if (amount > 0) {
 			player.removePotionEffect(StatusEffects.UNLUCK);
@@ -59,19 +59,19 @@ public class KarmaManager {
 		}
 	}
 
-	public static void resetKarma(PlayerEntity player) {
+	public static void resetFortune(PlayerEntity player) {
 		CompoundTag tag = PlayerData.get(player, Witchcraft.MODID);
-		tag.putInt("Karma", 0);
+		tag.putInt("Fortune", 0);
 		PlayerData.markDirty(player);
 	}
 
-	public static void setKarma(PlayerEntity player, int amount) {
-		setKarma(player, amount, false);
+	public static void setFortune(PlayerEntity player, int amount) {
+		setFortune(player, amount, false);
 	}
 
-	public static void setKarma(PlayerEntity player, int amount, boolean passive) {
+	public static void setFortune(PlayerEntity player, int amount, boolean passive) {
 		CompoundTag tag = PlayerData.get(player, Witchcraft.MODID);
-		tag.putInt("Karma", amount);
+		tag.putInt("Fortune", amount);
 		PlayerData.markDirty(player);
 		if (passive) return;
 		if (amount > 10) {
