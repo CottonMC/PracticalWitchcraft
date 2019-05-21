@@ -1,25 +1,28 @@
 package io.github.cottonmc.witchcraft.recipe;
 
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.*;
 import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-public class CauldronRecipe implements Recipe<Inventory> {
+public class CauldronRecipe implements Recipe<CauldronInventoryWrapper> {
 	Identifier id;
 	DefaultedList<Ingredient> inputs;
 	ItemStack output;
+	boolean needsFire;
 
-	public CauldronRecipe(Identifier id, ItemStack output, DefaultedList<Ingredient> inputs) {
+	public CauldronRecipe(Identifier id, ItemStack output, DefaultedList<Ingredient> inputs, boolean needsFire) {
 		this.id = id;
 		this.inputs = inputs;
 		this.output = output;
+		this.needsFire = needsFire;
 	}
 
 	@Override
-	public boolean matches(Inventory inventory, World world) {
+	public boolean matches(CauldronInventoryWrapper inventory, World world) {
+		if (needsFire && !inventory.hasFire) return false;
+
 		RecipeFinder finder = new RecipeFinder();
 		int ingredients = 0;
 
@@ -31,11 +34,11 @@ public class CauldronRecipe implements Recipe<Inventory> {
 			}
 		}
 
-		return ingredients == this.inputs.size() && finder.findRecipe(this, null);
+		return ingredients == this.inputs.size() && finder.findRecipe(this, null) && inventory.hasFire == needsFire;
 	}
 
 	@Override
-	public ItemStack craft(Inventory inventory) {
+	public ItemStack craft(CauldronInventoryWrapper inventory) {
 		return this.output.copy();
 	}
 

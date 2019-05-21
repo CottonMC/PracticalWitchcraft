@@ -4,6 +4,7 @@ import io.github.cottonmc.cotton.cauldron.Cauldron;
 import io.github.cottonmc.cotton.cauldron.CauldronBehavior;
 import io.github.cottonmc.witchcraft.Witchcraft;
 import io.github.cottonmc.witchcraft.item.WitchcraftItems;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
@@ -28,17 +29,18 @@ public class WitchcraftRecipes {
 						&& ctx.getFluid() == Fluids.WATER
 						&& ctx.getLevel() >= 1
 						&& ctx.getWorld().getRecipeManager().getFirstMatch(WitchcraftRecipes.CAULDRON,
-						new CauldronInventoryWrapper(ctx.getPreviousItems()), ctx.getWorld()).isPresent(),
+						new CauldronInventoryWrapper(ctx.getPreviousItems(), ctx.getWorld().getBlockState(ctx.getPos().down()).getBlock() == Blocks.FIRE), ctx.getWorld()).isPresent(),
 				(ctx -> {
-					System.out.println("Crafting!");
 					PlayerEntity player = ctx.getPlayer();
 					CauldronRecipe recipe = ctx.getWorld().getRecipeManager().getFirstMatch(WitchcraftRecipes.CAULDRON,
-							new CauldronInventoryWrapper(ctx.getPreviousItems()), ctx.getWorld()).get();
+							new CauldronInventoryWrapper(ctx.getPreviousItems(), ctx.getWorld().getBlockState(ctx.getPos().down()).getBlock() == Blocks.FIRE), ctx.getWorld()).get();
 					ItemStack result = recipe.output;
 					if (player != null) {
 						player.increaseStat(Stats.USE_CAULDRON, 1);
 						if (!player.inventory.insertStack(result)) {
-							player.dropItem(result, false).addScoreboardTag("NoCauldronCollect");
+							ItemEntity entity = new ItemEntity(ctx.getWorld(), player.getPos().getX(), player.getPos().getY()+1, player.getPos().getZ(), result);
+							entity.addScoreboardTag("NoCauldronCollect");
+							ctx.getWorld().spawnEntity(entity);
 						}
 					} else {
 						ItemEntity entity = new ItemEntity(ctx.getWorld(), ctx.getPos().getX(), ctx.getPos().getY()+1, ctx.getPos().getZ(), result);

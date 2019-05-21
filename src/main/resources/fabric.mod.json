@@ -5,10 +5,10 @@
 
   "name": "Practical Witchcraft",
   "icon": "assets/witchcraft/icon.png",
-  "description": "Realistic magic to help you get places",
+  "description": "Realistic magic for a modern world",
   "licence": "LGPL v3",
   "contact": {
-    "sources": "https://github.com/CottonMC/Brewery"
+    "sources": "https://github.com/CottonMC/PracticalWitchcraft"
   },
 
   "environment": "*",
@@ -27,6 +27,7 @@
     "fabricloader": ">=0.4.0",
     "fabric": "*",
     "cotton": "*",
-    "libblockattributes": ">=0.3.4"
+    "libblockattributes": ">=0.3.4",
+    "skillcheck": "*"
   }
 }

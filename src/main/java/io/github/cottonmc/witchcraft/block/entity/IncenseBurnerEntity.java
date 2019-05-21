@@ -3,6 +3,7 @@ package io.github.cottonmc.witchcraft.block.entity;
 import io.github.cottonmc.witchcraft.block.WitchcraftBlocks;
 import io.github.cottonmc.witchcraft.item.WitchcraftItems;
 import io.github.cottonmc.witchcraft.util.WitchcraftNetworking;
+import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.server.PlayerStream;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.network.packet.EntityPotionEffectS2CPacket;
@@ -15,7 +16,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 
-public class IncenseBurnerEntity extends BlockEntity {
+public class IncenseBurnerEntity extends BlockEntity implements BlockEntityClientSerializable {
 	private ItemStack incense = ItemStack.EMPTY;
 
 	private int purges;
@@ -88,5 +89,26 @@ public class IncenseBurnerEntity extends BlockEntity {
 		tag.putInt("Purges", purges);
 		tag.put("Incense", incense.toTag(new CompoundTag()));
 		return super.toTag(tag);
+	}
+
+	@Override
+	public void fromClientTag(CompoundTag tag) {
+		this.fromTag(tag);
+	}
+
+	@Override
+	public CompoundTag toClientTag(CompoundTag tag) {
+		return this.toTag(tag);
+	}
+
+	@Override
+	public void markDirty() {
+		super.markDirty();
+		if (!this.world.isClient) {
+			for (Object obj : PlayerStream.watching(this).toArray()) {
+				ServerPlayerEntity player = (ServerPlayerEntity) obj;
+				player.networkHandler.sendPacket(this.toUpdatePacket());
+			}
+		}
 	}
 }

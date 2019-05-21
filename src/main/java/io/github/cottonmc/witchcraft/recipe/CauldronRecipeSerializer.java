@@ -16,10 +16,11 @@ public class CauldronRecipeSerializer implements RecipeSerializer<CauldronRecipe
 	@Override
 	public CauldronRecipe read(Identifier id, JsonObject json) {
 		DefaultedList<Ingredient> ingredients = getIngredients(JsonHelper.getArray(json, "ingredients"));
+		boolean needsFire = JsonHelper.getBoolean(json, "needsFire");
 		if (ingredients.isEmpty()) throw new JsonParseException("No ingredients for cauldron recipe!");
 		else {
 			ItemStack result = ShapedRecipe.getItemStack(JsonHelper.getObject(json, "result"));
-			return new CauldronRecipe(id,  result, ingredients);
+			return new CauldronRecipe(id,  result, ingredients, needsFire);
 		}
 	}
 
@@ -33,7 +34,8 @@ public class CauldronRecipeSerializer implements RecipeSerializer<CauldronRecipe
 		}
 
 		ItemStack output = buf.readItemStack();
-		return new CauldronRecipe(id, output, ingredients);
+		boolean needsFire = buf.readBoolean();
+		return new CauldronRecipe(id, output, ingredients, needsFire);
 	}
 
 	@Override
@@ -46,6 +48,8 @@ public class CauldronRecipeSerializer implements RecipeSerializer<CauldronRecipe
 		}
 
 		buf.writeItemStack(recipe.getOutput());
+
+		buf.writeBoolean(recipe.needsFire);
 	}
 
 	private static DefaultedList<Ingredient> getIngredients(JsonArray json) {

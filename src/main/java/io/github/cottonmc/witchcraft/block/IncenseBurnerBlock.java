@@ -34,23 +34,24 @@ public class IncenseBurnerBlock extends Block implements BlockEntityProvider {
 	@Override
 	public boolean activate(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		ItemStack handStack = player.getStackInHand(hand);
-		IncenseBurnerEntity be = (IncenseBurnerEntity)world.getBlockEntity(pos);
-		if (be == null) return false;
+		BlockEntity be = world.getBlockEntity(pos);
+		if (world.isClient || !(be instanceof IncenseBurnerEntity)) return true;
+		IncenseBurnerEntity burner = (IncenseBurnerEntity) be;
 		//don't do anything if incense is already burning!
 		if (world.getBlockTickScheduler().isScheduled(pos, WitchcraftBlocks.INCENSE_BURNER)
 				|| world.getBlockTickScheduler().isTicking(pos, WitchcraftBlocks.INCENSE_BURNER)) return true;
-		if (be.hasIncense()) {
+		if (burner.hasIncense()) {
 			if (handStack.getItem() == Items.FLINT_AND_STEEL) {
-				be.light();
+				burner.light();
 				world.playSound(null, pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0f, 1.0f);
 				return true;
 			} else if (handStack.isEmpty()) {
-				player.setStackInHand(hand, be.removeIncense());
+				player.setStackInHand(hand, burner.removeIncense());
 				return true;
 			}
 			//eventually change to IncenseItem or whatever
 		} else if (handStack.getItem() instanceof IncenseStickItem) {
-			be.setIncense(handStack);
+			burner.setIncense(handStack);
 			handStack.subtractAmount(1);
 			world.playSound(null, pos, SoundEvents.ENTITY_ITEM_FRAME_ADD_ITEM, SoundCategory.BLOCKS, 1.0f, 1.0f);
 			return true;

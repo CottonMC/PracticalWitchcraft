@@ -9,9 +9,11 @@ import net.minecraft.util.DefaultedList;
 
 public class CauldronInventoryWrapper implements Inventory, RecipeInputProvider {
 	private DefaultedList<ItemStack> items;
+	public final boolean hasFire;
 
-	public CauldronInventoryWrapper(DefaultedList<ItemStack> items) {
+	public CauldronInventoryWrapper(DefaultedList<ItemStack> items, boolean hasFire) {
 		this.items = items;
+		this.hasFire = hasFire;
 	}
 
 	@Override
