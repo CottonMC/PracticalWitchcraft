@@ -32,14 +32,14 @@ public class WitchcraftRecipes {
 						new CauldronInventoryWrapper(ctx.getPreviousItems(), ctx.getWorld().getBlockState(ctx.getPos().down()).getBlock() == Blocks.FIRE), ctx.getWorld()).isPresent(),
 				(ctx -> {
 					PlayerEntity player = ctx.getPlayer();
-					CauldronRecipe recipe = ctx.getWorld().getRecipeManager().getFirstMatch(WitchcraftRecipes.CAULDRON,
-							new CauldronInventoryWrapper(ctx.getPreviousItems(), ctx.getWorld().getBlockState(ctx.getPos().down()).getBlock() == Blocks.FIRE), ctx.getWorld()).get();
-					ItemStack result = recipe.output;
+					CauldronInventoryWrapper wrapper = new CauldronInventoryWrapper(ctx.getPreviousItems(), ctx.getWorld().getBlockState(ctx.getPos().down()).getBlock() == Blocks.FIRE);
+					CauldronRecipe recipe = ctx.getWorld().getRecipeManager().getFirstMatch(WitchcraftRecipes.CAULDRON, wrapper, ctx.getWorld()).get();
+					ItemStack result = recipe.craft(wrapper);
 					if (player != null) {
 						player.increaseStat(Stats.USE_CAULDRON, 1);
 						if (!player.inventory.insertStack(result)) {
-							ItemEntity entity = new ItemEntity(ctx.getWorld(), player.getPos().getX(), player.getPos().getY()+1, player.getPos().getZ(), result);
-							entity.addScoreboardTag("NoCauldronCollect");
+							ItemEntity entity = player.dropItem(result, false);
+							if (entity != null) entity.addScoreboardTag("NoCauldronCollect");
 							ctx.getWorld().spawnEntity(entity);
 						}
 					} else {

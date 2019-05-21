@@ -32,7 +32,7 @@ public class StoneCauldronRenderer extends BlockEntityRenderer<StoneCauldronEnti
 		float green = ((color >> 2) & 255) / 255f;
 		float blue = (color & 255) / 255f;
 		if (amount > 0) {
-			double height = ((be.fluid.getInvFluid(0).getAmount() / (float)FluidVolume.BUCKET) * 11 / 16f) + 4/16f;
+			double height = ((be.fluid.getInvFluid(0).getAmount() / (float)FluidVolume.BUCKET) * 9 / 16f) + 6/16f;
 			buffer.vertex(2/16f, height, 2/16f).texture(sprite.getMinU(), sprite.getMinV()).texture(240, 240).color(red, green, blue, 1f).next();
 			buffer.vertex(2/16f, height, 14/16f).texture(sprite.getMinU(), sprite.getMaxV()).texture(240, 240).color(red, green, blue, 1f).next();
 			buffer.vertex(14/16f, height, 14/16f).texture(sprite.getMaxU(), sprite.getMaxV()).texture(240, 240).color(red, green, blue, 1f).next();
