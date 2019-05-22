@@ -2,6 +2,7 @@ package io.github.cottonmc.witchcraft.fortune;
 
 import com.raphydaphy.crochet.data.PlayerData;
 import io.github.cottonmc.witchcraft.Witchcraft;
+import io.github.cottonmc.witchcraft.effect.WitchcraftEffects;
 import io.github.cottonmc.witchcraft.util.WitchcraftNetworking;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -45,8 +46,8 @@ public class FortuneManager {
 			player.addPotionEffect(new StatusEffectInstance(StatusEffects.UNLUCK, duration, multiplier, false, false, true));
 		}
 		if (karma > 10) {
-			player.removePotionEffect(StatusEffects.BAD_OMEN);
-			WitchcraftNetworking.removeEffect((ServerPlayerEntity)player, StatusEffects.BAD_OMEN);
+			player.removePotionEffect(WitchcraftEffects.CURSED);
+			WitchcraftNetworking.removeEffect((ServerPlayerEntity)player, WitchcraftEffects.CURSED);
 		} else if (karma < 10) {
 			player.removePotionEffect(StatusEffects.HERO_OF_THE_VILLAGE);
 			WitchcraftNetworking.removeEffect((ServerPlayerEntity)player, StatusEffects.HERO_OF_THE_VILLAGE);
@@ -55,7 +56,7 @@ public class FortuneManager {
 			player.addPotionEffect(new StatusEffectInstance(StatusEffects.HERO_OF_THE_VILLAGE, 18000, 0, false, false, true));
 		} else if (karma <= -20) {
 			int multiplier = ((karma * -1) - 20) / 5;
-			player.addPotionEffect(new StatusEffectInstance(StatusEffects.BAD_OMEN, 18000, multiplier, false, false, true));
+			player.addPotionEffect(new StatusEffectInstance(WitchcraftEffects.CURSED, 18000, multiplier, false, false, true));
 		}
 	}
 
@@ -75,8 +76,8 @@ public class FortuneManager {
 		PlayerData.markDirty(player);
 		if (passive) return;
 		if (amount > 10) {
-			player.removePotionEffect(StatusEffects.BAD_OMEN);
-			WitchcraftNetworking.removeEffect((ServerPlayerEntity)player, StatusEffects.BAD_OMEN);
+			player.removePotionEffect(WitchcraftEffects.CURSED);
+			WitchcraftNetworking.removeEffect((ServerPlayerEntity)player, WitchcraftEffects.CURSED);
 		} else if (amount < 10) {
 			player.removePotionEffect(StatusEffects.HERO_OF_THE_VILLAGE);
 			WitchcraftNetworking.removeEffect((ServerPlayerEntity)player, StatusEffects.HERO_OF_THE_VILLAGE);
@@ -85,7 +86,17 @@ public class FortuneManager {
 			player.addPotionEffect(new StatusEffectInstance(StatusEffects.HERO_OF_THE_VILLAGE, 18000, 0, true, false));
 		} else if (amount <= -20) {
 			int multiplier = ((amount * -1) - 20) / 5;
-			player.addPotionEffect(new StatusEffectInstance(StatusEffects.BAD_OMEN, 18000, multiplier, true, false));
+			player.addPotionEffect(new StatusEffectInstance(WitchcraftEffects.CURSED, 18000, multiplier, true, false));
+		}
+	}
+
+	public static void curse(PlayerEntity player) {
+		if (!player.hasStatusEffect(WitchcraftEffects.CURSED)) player.addPotionEffect(new StatusEffectInstance(WitchcraftEffects.CURSED, 120000));
+		else {
+			int level = player.getStatusEffect(WitchcraftEffects.CURSED).getAmplifier();
+			if (level < 5) {
+				player.addPotionEffect(new StatusEffectInstance(WitchcraftEffects.CURSED, 120000, level + 1));
+			}
 		}
 	}
 }
