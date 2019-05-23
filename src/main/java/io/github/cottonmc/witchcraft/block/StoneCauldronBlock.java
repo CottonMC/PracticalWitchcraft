@@ -106,26 +106,27 @@ public class StoneCauldronBlock extends BlockWithEntity implements AttributeProv
 				return true;
 			}
 		}
-		if (world.getBlockState(pos.down()).getBlock() == Blocks.CAMPFIRE && fluid.getRawFluid() == Fluids.WATER && fluid.getAmount() > FluidVolume.BOTTLE) {
-			if (stack.getItem() == WitchcraftItems.BROOMSTICK) {
-				CauldronInventoryWrapper wrapper = new CauldronInventoryWrapper(cauldron.previousItems, WitchcraftRecipes.isFireUnder(world, pos));
-				Optional<CauldronRecipe> opt = world.getRecipeManager().getFirstMatch(WitchcraftRecipes.CAULDRON, wrapper, world);
-				if (opt.isPresent()) {
-					CauldronRecipe recipe = opt.get();
-					ItemStack result = recipe.craft(wrapper);
-					drain(world, pos, state, Fluids.WATER, 1);
-					player.increaseStat(Stats.USE_CAULDRON, 1);
-					if (!player.inventory.insertStack(result)) {
-						ItemEntity entity = player.dropItem(result, false);
-						if (entity != null) entity.addScoreboardTag("NoCauldronCollect");
-						world.spawnEntity(entity);
+		if (world.getBlockState(pos.down()).getBlock() == Blocks.CAMPFIRE && !fluid.isEmpty()) {
+			if (fluid.getRawFluid() == Fluids.WATER) {
+				if (stack.getItem() == WitchcraftItems.BROOMSTICK && fluid.getAmount() > FluidVolume.BOTTLE) {
+					CauldronInventoryWrapper wrapper = new CauldronInventoryWrapper(cauldron.previousItems, WitchcraftRecipes.isFireUnder(world, pos));
+					Optional<CauldronRecipe> opt = world.getRecipeManager().getFirstMatch(WitchcraftRecipes.CAULDRON, wrapper, world);
+					if (opt.isPresent()) {
+						CauldronRecipe recipe = opt.get();
+						ItemStack result = recipe.craft(wrapper);
+						drain(world, pos, state, Fluids.WATER, 1);
+						player.increaseStat(Stats.USE_CAULDRON, 1);
+						if (!player.inventory.insertStack(result)) {
+							ItemEntity entity = player.dropItem(result, false);
+							if (entity != null) entity.addScoreboardTag("NoCauldronCollect");
+							world.spawnEntity(entity);
+						}
 					}
+				} else {
+					if (cauldron.addItem(stack)) stack.setAmount(0);
 				}
-				return true;
-			} else {
-				if (cauldron.addItem(stack)) stack.setAmount(0);
-				return true;
 			}
+			return true;
 		}
 		CauldronContext ctx = new CauldronContext(world, pos, state, fluid.getAmount() / FluidVolume.BOTTLE, fluid.getRawFluid(), cauldron.previousItems, player, hand, player.getStackInHand(hand));
 		for (Predicate<CauldronContext> pred : CauldronBehavior.BEHAVIORS.keySet()) {
