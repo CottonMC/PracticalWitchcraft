@@ -5,15 +5,16 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.stat.Stat;
 import net.minecraft.util.Identifier;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Deity {
-	private Map<Stat, Float> favors;
-	private Map<Stat, Float> disfavors;
+	private Map<Stat, Float> favors = new HashMap<>();
+	private Map<Stat, Float> disfavors = new HashMap<>();
+	private DeityReload reloader;
 
-	public Deity(Map<Stat, Float> favors, Map<Stat, Float> disfavors) {
-		this.favors = favors;
-		this.disfavors = disfavors;
+	public Deity(DeityReload reloader) {
+		this.reloader = reloader;
 	}
 
 	public void update(PlayerEntity player, Stat action, int amount) {
@@ -27,9 +28,10 @@ public class Deity {
 		return new TranslatableComponent("deity." + id.getNamespace() + "." + id.getPath()).getText();
 	}
 
-	public void prepareReload() {
+	public void reload() {
 		favors.clear();
 		disfavors.clear();
+		reloader.reload(this);
 	}
 
 	public void addFavors(Map<Stat, Float> favors) {

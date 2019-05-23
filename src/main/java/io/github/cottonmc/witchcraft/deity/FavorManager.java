@@ -32,6 +32,8 @@ public class FavorManager {
 			favor = tag.getFloat("Favor");
 			oldFavor = (int)favor;
 			favor += amount;
+			if (favor > 100) favor = 100;
+			if (favor < -100) favor = -100;
 			newFavor = (int)favor;
 		}
 		tag.putFloat("Favor", favor);
@@ -80,7 +82,10 @@ public class FavorManager {
 
 	public static void setFavor(PlayerEntity player, Deity deity, float amount, boolean passive) {
 		CompoundTag tag = getDeityTag(player, deity);
-		tag.putFloat("Favor", amount);
+		float favor = amount;
+		if (amount > 100) favor = 100;
+		if (amount < -100) favor = -100;
+		tag.putFloat("Favor", favor);
 		PlayerData.markDirty(player);
 		if (passive) return;
 		if (amount > 10) {
