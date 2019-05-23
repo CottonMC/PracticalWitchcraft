@@ -45,7 +45,10 @@ import java.util.function.Predicate;
 public class StoneCauldronBlock extends BlockWithEntity implements AttributeProvider, Cauldron {
 
 	public static final VoxelShape RAY_TRACE_SHAPE = createCuboidShape(2.0D, 4.0D, 2.0D, 14.0D, 16.0D, 14.0D);
-	public static final VoxelShape OUTLINE_SHAPE = VoxelShapes.combineAndSimplify(VoxelShapes.fullCube(), VoxelShapes.union(createCuboidShape(0.0D, 0.0D, 4.0D, 16.0D, 3.0D, 12.0D), new VoxelShape[]{createCuboidShape(4.0D, 0.0D, 0.0D, 12.0D, 3.0D, 16.0D), createCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 3.0D, 14.0D), RAY_TRACE_SHAPE}), BooleanBiFunction.ONLY_FIRST);
+	public static final VoxelShape OUTLINE_SHAPE = VoxelShapes.combineAndSimplify(VoxelShapes.fullCube(),
+			VoxelShapes.union(createCuboidShape(0.0D, 0.0D, 4.0D, 16.0D, 3.0D, 12.0D),
+					new VoxelShape[]{createCuboidShape(4.0D, 0.0D, 0.0D, 12.0D, 3.0D, 16.0D),
+							createCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 3.0D, 14.0D), RAY_TRACE_SHAPE}), BooleanBiFunction.ONLY_FIRST);
 
 	public StoneCauldronBlock() {
 		super(FabricBlockSettings.of(Material.STONE).breakByTool(FabricToolTags.PICKAXES).strength(6.0f, 6.0f).build());
@@ -169,6 +172,17 @@ public class StoneCauldronBlock extends BlockWithEntity implements AttributeProv
 		FluidVolume vol = cauldron.fluid.getInvFluid(0);
 		if (vol.getRawFluid() == null) return false;
 		return vol.getRawFluid().equals(fluid);
+	}
+
+	@Override
+	public CauldronContext createContext(World world, BlockPos pos, PlayerEntity player, ItemStack stack) {
+		BlockState state = world.getBlockState(pos);
+		StoneCauldronEntity cauldron = (StoneCauldronEntity) world.getBlockEntity(pos);
+		FluidVolume fluid = cauldron.fluid.getInvFluid(0);
+		Hand hand;
+		if (player == null) hand = null;
+		else hand = player.getActiveHand();
+		return new CauldronContext(world, pos, state, fluid.getAmount() / FluidVolume.BOTTLE, fluid.getRawFluid(), cauldron.previousItems, player, hand, stack);
 	}
 
 	public static int getLastFilledSlot(DefaultedList<ItemStack> slots) {

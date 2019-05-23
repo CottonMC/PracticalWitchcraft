@@ -58,8 +58,8 @@ dependencies {
 	include "net.fabricmc.fabric-api:fabric-api:0.3.0-pre+build.156"
 
 	modCompile "io.github.cottonmc:SkillCheck:1.0.8+1.14.1"
-	modCompile "io.github.cottonmc:cotton:0.6.7+1.14.1-SNAPSHOT"
-	include "io.github.cottonmc:cotton:0.6.7+1.14.1-SNAPSHOT"
+	modCompile "io.github.cottonmc:cotton:0.6.8+1.14.1-SNAPSHOT"
+	include "io.github.cottonmc:cotton:0.6.8+1.14.1-SNAPSHOT"
 	modCompile "alexiil.mc.lib:libblockattributes:0.4.2"
 	include "alexiil.mc.lib:libblockattributes:0.4.2"
 }
