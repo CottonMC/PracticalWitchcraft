@@ -4,7 +4,9 @@ import io.github.cottonmc.cotton.cauldron.Cauldron;
 import io.github.cottonmc.cotton.cauldron.CauldronBehavior;
 import io.github.cottonmc.witchcraft.Witchcraft;
 import io.github.cottonmc.witchcraft.item.WitchcraftItems;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.CampfireBlock;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
@@ -16,7 +18,9 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.World;
 
 public class WitchcraftRecipes {
 
@@ -29,10 +33,10 @@ public class WitchcraftRecipes {
 						&& ctx.getFluid() == Fluids.WATER
 						&& ctx.getLevel() >= 1
 						&& ctx.getWorld().getRecipeManager().getFirstMatch(WitchcraftRecipes.CAULDRON,
-						new CauldronInventoryWrapper(ctx.getPreviousItems(), ctx.getWorld().getBlockState(ctx.getPos().down()).getBlock() == Blocks.FIRE), ctx.getWorld()).isPresent(),
+						new CauldronInventoryWrapper(ctx.getPreviousItems(), isFireUnder(ctx.getWorld(), ctx.getPos())), ctx.getWorld()).isPresent(),
 				(ctx -> {
 					PlayerEntity player = ctx.getPlayer();
-					CauldronInventoryWrapper wrapper = new CauldronInventoryWrapper(ctx.getPreviousItems(), ctx.getWorld().getBlockState(ctx.getPos().down()).getBlock() == Blocks.FIRE);
+					CauldronInventoryWrapper wrapper = new CauldronInventoryWrapper(ctx.getPreviousItems(), isFireUnder(ctx.getWorld(), ctx.getPos()));
 					CauldronRecipe recipe = ctx.getWorld().getRecipeManager().getFirstMatch(WitchcraftRecipes.CAULDRON, wrapper, ctx.getWorld()).get();
 					ItemStack result = recipe.craft(wrapper);
 					if (player != null) {
@@ -51,6 +55,13 @@ public class WitchcraftRecipes {
 					ctx.getWorld().playSound(null, ctx.getPos(), SoundEvents.BLOCK_NETHER_WART_BREAK, SoundCategory.BLOCKS, 1.0f, 1.0f);
 				})
 		);
+	}
+
+	public static boolean isFireUnder(World world, BlockPos pos) {
+		BlockState state = world.getBlockState(pos.down());
+		if (state.getBlock() == Blocks.FIRE) return true;
+		if (state.getBlock() == Blocks.CAMPFIRE) return state.get(CampfireBlock.LIT);
+		return false;
 	}
 
 	public static <T extends Recipe<?>> RecipeType<T> register(String id) {

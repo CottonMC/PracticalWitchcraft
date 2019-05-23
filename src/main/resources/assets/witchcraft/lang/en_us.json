@@ -9,6 +9,6 @@
 
   "effect.witchcraft.immunity": "Immunity",
 
-  "msg.witchcraft.fortune.gain": "You feel fortune smile upon you.",
-  "msg.witchcraft.fortune.lose": "You feel misfortune creeping in on you."
+  "msg.witchcraft.favor.gain": "You feel %s smile upon you.",
+  "msg.witchcraft.favor.lose": "You feel %s frown upon your actions."
 }

@@ -5,6 +5,10 @@ import alexiil.mc.lib.attributes.AttributeProvider;
 import alexiil.mc.lib.attributes.Simulation;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import alexiil.mc.lib.attributes.fluid.volume.NormalFluidVolume;
+import io.github.cottonmc.witchcraft.item.WitchcraftItems;
+import io.github.cottonmc.witchcraft.recipe.CauldronInventoryWrapper;
+import io.github.cottonmc.witchcraft.recipe.CauldronRecipe;
+import io.github.cottonmc.witchcraft.recipe.WitchcraftRecipes;
 import io.github.cottonmc.witchcraft.util.BucketUtil;
 import io.github.cottonmc.witchcraft.block.entity.StoneCauldronEntity;
 import io.github.cottonmc.cotton.cauldron.Cauldron;
@@ -15,13 +19,16 @@ import net.fabricmc.fabric.api.tools.FabricToolTags;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.EntityContext;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.stat.Stats;
 import net.minecraft.util.BooleanBiFunction;
 import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Hand;
@@ -32,6 +39,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
+import java.util.Optional;
 import java.util.function.Predicate;
 
 public class StoneCauldronBlock extends BlockWithEntity implements AttributeProvider, Cauldron {
@@ -95,6 +103,27 @@ public class StoneCauldronBlock extends BlockWithEntity implements AttributeProv
 				if (!player.isCreative()) player.setStackInHand(hand, new ItemStack(Items.BUCKET));
 				cauldron.fluid.setInvFluid(0, BucketUtil.getBucketFluid(stack), Simulation.ACTION);
 				world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0f, 1.0f);
+				return true;
+			}
+		}
+		if (world.getBlockState(pos.down()).getBlock() == Blocks.CAMPFIRE && fluid.getRawFluid() == Fluids.WATER && fluid.getAmount() > FluidVolume.BOTTLE) {
+			if (stack.getItem() == WitchcraftItems.BROOMSTICK) {
+				CauldronInventoryWrapper wrapper = new CauldronInventoryWrapper(cauldron.previousItems, WitchcraftRecipes.isFireUnder(world, pos));
+				Optional<CauldronRecipe> opt = world.getRecipeManager().getFirstMatch(WitchcraftRecipes.CAULDRON, wrapper, world);
+				if (opt.isPresent()) {
+					CauldronRecipe recipe = opt.get();
+					ItemStack result = recipe.craft(wrapper);
+					drain(world, pos, state, Fluids.WATER, 1);
+					player.increaseStat(Stats.USE_CAULDRON, 1);
+					if (!player.inventory.insertStack(result)) {
+						ItemEntity entity = player.dropItem(result, false);
+						if (entity != null) entity.addScoreboardTag("NoCauldronCollect");
+						world.spawnEntity(entity);
+					}
+				}
+				return true;
+			} else {
+				if (cauldron.addItem(stack)) stack.setAmount(0);
 				return true;
 			}
 		}

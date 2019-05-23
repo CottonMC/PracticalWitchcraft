@@ -96,6 +96,16 @@ public class StoneCauldronEntity extends BlockEntity implements Tickable, BlockE
 		}
 	}
 
+	public boolean addItem(ItemStack stack) {
+		int index = StoneCauldronBlock.getLastFilledSlot(previousItems);
+		if (index < 7) {
+			world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_SPLASH, SoundCategory.BLOCKS, 1.0f, 1.0f);
+			previousItems.set(index + 1, stack.copy());
+			return true;
+		}
+		return false;
+	}
+
 	public List<ItemEntity> getInputItemEntities() {
 		VoxelShape inputShape = VoxelShapes.union(VoxelShapes.fullCube(), ABOVE_SHAPE);
 		return inputShape.getBoundingBoxes().stream().flatMap((bb) -> world.getEntities(ItemEntity.class, bb.offset(pos.getX() - 0.5D, pos.getY() - 0.5D, pos.getZ() - 0.5D), EntityPredicates.VALID_ENTITY).stream()).collect(Collectors.toList());
