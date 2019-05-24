@@ -1,0 +1,22 @@
+{
+  "type": "witchcraft:cauldron",
+  "ingredients": [
+    {
+      "item": "minecraft:potion"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    },
+    {
+      "item": "minecraft:quartz"
+    },
+    {
+      "item": "minecraft:prismarine_crystals"
+    }
+  ],
+  "result": {
+    "item": "witchcraft:fae_fire",
+    "count": 1
+  },
+  "needsFire": true
+}

@@ -9,6 +9,7 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -17,7 +18,7 @@ public class WitchcraftItems {
 
 	public static Item BROOMSTICK;
 
-	public static final ItemGroup BREWERY_GROUP = FabricItemGroupBuilder.build(new Identifier(Witchcraft.MODID, "main_group"), () -> new ItemStack(BROOMSTICK));
+	public static final ItemGroup WITCHCRAFT_GROUP = FabricItemGroupBuilder.build(new Identifier(Witchcraft.MODID, "main_group"), () -> new ItemStack(BROOMSTICK));
 
 	public static Item PURGING_INCENSE = register("purging_incense", new IncenseStickItem((player) -> {
 		if (player.hasStatusEffect(StatusEffects.BAD_OMEN)) {
@@ -34,8 +35,11 @@ public class WitchcraftItems {
 		}
 	}));
 
+	public static Item FAE_FIRE = register("fae_fire", new Item(new Item.Settings().itemGroup(WITCHCRAFT_GROUP).recipeRemainder(Items.GLASS_BOTTLE)));
+	public static Item BOTTLED_FAIRY = register("bottled_fairy", new Item(new Item.Settings().itemGroup(WITCHCRAFT_GROUP).recipeRemainder(Items.GLASS_BOTTLE)));
+
 	public static void init() {
-		BROOMSTICK = register("broomstick", new Item(new Item.Settings().itemGroup(BREWERY_GROUP).stackSize(1)));
+		BROOMSTICK = register("broomstick", new Item(new Item.Settings().itemGroup(WITCHCRAFT_GROUP).stackSize(1)));
 	}
 
 	public static Item register(String name, Item item) {

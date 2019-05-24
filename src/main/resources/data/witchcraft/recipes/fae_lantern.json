@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "GMG",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:iron_nugget"
+    },
+    "G": {
+      "item": "minecraft:glass_pane"
+    },
+    "M": {
+      "item": "witchcraft:fae_fire"
+    }
+  },
+  "result": {
+    "item": "witchcraft:fae_lantern",
+    "count": 1
+  }
+}
