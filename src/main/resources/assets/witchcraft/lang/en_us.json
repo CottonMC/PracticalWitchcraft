@@ -6,7 +6,7 @@
   "item.witchcraft.broomstick": "Broomstick",
   "item.witchcraft.purging_incense": "Purging Incense",
   "item.witchcraft.fae_fire": "Fae Fire",
-  "item.witchcraft.bottled_fairy": "Faery in a Bottle",
+  "item.witchcraft.bottled_pixie": "Pixie in a Bottle",
 
   "itemGroup.witchcraft.main_group": "Practical Witchcraft",
 
@@ -14,8 +14,8 @@
 
   "msg.witchcraft.favor.gain": "You feel %s smile upon you.",
   "msg.witchcraft.favor.lose": "You feel %s frown upon your actions.",
-  "msg.witchcraft.fae.none": "There are no fairies at this lantern.",
-  "msg.witchcraft.fae.one": "There is one fairie at this lantern.",
-  "msg.witchcraft.fae.few": "There are a few fairies at this lantern.",
-  "msg.witchcraft.fae.many": "Fairies are swarming around the lantern!"
+  "msg.witchcraft.fae.none": "There are no pixies at this lantern.",
+  "msg.witchcraft.fae.one": "There is one pixies at this lantern.",
+  "msg.witchcraft.fae.few": "There are a few pixies at this lantern.",
+  "msg.witchcraft.fae.many": "Pixies are swarming around the lantern!"
 }

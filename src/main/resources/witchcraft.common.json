@@ -6,6 +6,7 @@
   "mixins": [
     "MixinPotions",
     "MixinStatHandler",
-    "MixinMilkBucket"
+    "MixinMilkBucket",
+    "MixinSpawnHelper"
   ]
 }

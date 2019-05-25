@@ -1,6 +1,7 @@
 package io.github.cottonmc.witchcraft.item;
 
 import io.github.cottonmc.witchcraft.Witchcraft;
+import io.github.cottonmc.witchcraft.effect.WitchcraftEffects;
 import io.github.cottonmc.witchcraft.util.WitchcraftNetworking;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.client.network.packet.EntityPotionEffectS2CPacket;
@@ -21,14 +22,14 @@ public class WitchcraftItems {
 	public static final ItemGroup WITCHCRAFT_GROUP = FabricItemGroupBuilder.build(new Identifier(Witchcraft.MODID, "main_group"), () -> new ItemStack(BROOMSTICK));
 
 	public static Item PURGING_INCENSE = register("purging_incense", new IncenseStickItem((player) -> {
-		if (player.hasStatusEffect(StatusEffects.BAD_OMEN)) {
-			StatusEffectInstance inst = player.getStatusEffect(StatusEffects.BAD_OMEN);
+		if (player.hasStatusEffect(WitchcraftEffects.CURSED)) {
+			StatusEffectInstance inst = player.getStatusEffect(WitchcraftEffects.CURSED);
 			int level = inst.getAmplifier();
 			int time = inst.getDuration();
-			player.removePotionEffect(StatusEffects.BAD_OMEN);
-			WitchcraftNetworking.removeEffect((ServerPlayerEntity) player, StatusEffects.BAD_OMEN);
+			player.removePotionEffect(WitchcraftEffects.CURSED);
+			WitchcraftNetworking.removeEffect((ServerPlayerEntity) player, WitchcraftEffects.CURSED);
 			if (level != 0) {
-				StatusEffectInstance newInst = new StatusEffectInstance(StatusEffects.BAD_OMEN, time, level - 1, false, false, true);
+				StatusEffectInstance newInst = new StatusEffectInstance(WitchcraftEffects.CURSED, time, level - 1, false, false, true);
 				player.addPotionEffect(newInst);
 				((ServerPlayerEntity) player).networkHandler.sendPacket(new EntityPotionEffectS2CPacket(player.getEntityId(), newInst));
 			}
@@ -36,7 +37,7 @@ public class WitchcraftItems {
 	}));
 
 	public static Item FAE_FIRE = register("fae_fire", new Item(new Item.Settings().itemGroup(WITCHCRAFT_GROUP).recipeRemainder(Items.GLASS_BOTTLE)));
-	public static Item BOTTLED_FAIRY = register("bottled_fairy", new Item(new Item.Settings().itemGroup(WITCHCRAFT_GROUP).recipeRemainder(Items.GLASS_BOTTLE)));
+	public static Item BOTTLED_PIXIE = register("bottled_pixie", new Item(new Item.Settings().itemGroup(WITCHCRAFT_GROUP).recipeRemainder(Items.GLASS_BOTTLE)));
 
 	public static void init() {
 		BROOMSTICK = register("broomstick", new Item(new Item.Settings().itemGroup(WITCHCRAFT_GROUP).stackSize(1)));

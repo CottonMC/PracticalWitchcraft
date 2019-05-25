@@ -1,6 +1,7 @@
 package io.github.cottonmc.witchcraft.block;
 
 import io.github.cottonmc.witchcraft.Witchcraft;
+import io.github.cottonmc.witchcraft.block.entity.FaeLanternEntity;
 import io.github.cottonmc.witchcraft.block.entity.IncenseBurnerEntity;
 import io.github.cottonmc.witchcraft.block.entity.StoneCauldronEntity;
 import io.github.cottonmc.witchcraft.item.WitchcraftItems;
@@ -23,7 +24,8 @@ public class WitchcraftBlocks {
 	public static final Block INCENSE_BURNER = register("incense_burner", new IncenseBurnerBlock(), WitchcraftItems.WITCHCRAFT_GROUP);
 	public static final BlockEntityType<IncenseBurnerEntity> INCENSE_BURNER_BE = register("incense_burner", IncenseBurnerEntity::new, INCENSE_BURNER);
 
-	public static final Block FEY_LANTERN = register("fae_lantern", new FaeLanternBlock(), WitchcraftItems.WITCHCRAFT_GROUP);
+	public static final Block FAE_LANTERN = register("fae_lantern", new FaeLanternBlock(), WitchcraftItems.WITCHCRAFT_GROUP);
+	public static final BlockEntityType<FaeLanternEntity> FAE_LANTERN_BE = register("fae_lantern", FaeLanternEntity::new, FAE_LANTERN);
 
 	public static void init() {
 	}
