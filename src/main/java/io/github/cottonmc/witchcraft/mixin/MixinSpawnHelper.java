@@ -27,9 +27,9 @@ public abstract class MixinSpawnHelper {
 			Chunk spawnIn = world.getChunk(pos);
 			Set<BlockPos> positions = spawnIn.getBlockEntityPositions();
 			for (BlockPos bePos : positions) {
-				if (world.getBlockEntity(bePos) instanceof FaeLanternEntity) {
-					BlockState state = world.getBlockState(bePos);
-					if (state.getBlock() == WitchcraftBlocks.FAE_LANTERN && state.get(FaeLanternBlock.PIXIES) > 0) {
+				BlockState state = world.getBlockState(bePos);
+				if (state.getBlock() == WitchcraftBlocks.FAE_LANTERN) {
+					if (state.get(FaeLanternBlock.PIXIES) > 0) {
 						cir.setReturnValue(false);
 						return;
 					}
