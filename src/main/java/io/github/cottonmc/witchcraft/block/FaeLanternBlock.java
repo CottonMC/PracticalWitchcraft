@@ -1,5 +1,6 @@
 package io.github.cottonmc.witchcraft.block;
 
+import io.github.cottonmc.witchcraft.block.entity.FaeLanternEntity;
 import io.github.cottonmc.witchcraft.item.WitchcraftItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -103,6 +104,6 @@ public class FaeLanternBlock extends LanternBlock implements BlockEntityProvider
 
 	@Override
 	public BlockEntity createBlockEntity(BlockView view) {
-		return null;
+		return new FaeLanternEntity();
 	}
 }

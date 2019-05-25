@@ -1,6 +1,5 @@
 package io.github.cottonmc.witchcraft.mixin;
 
-import io.github.cottonmc.repackage.blue.endless.jankson.annotation.Nullable;
 import io.github.cottonmc.witchcraft.block.FaeLanternBlock;
 import io.github.cottonmc.witchcraft.block.WitchcraftBlocks;
 import io.github.cottonmc.witchcraft.block.entity.FaeLanternEntity;
@@ -20,9 +19,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Set;
 
 @Mixin(SpawnHelper.class)
-public class MixinSpawnHelper {
+public abstract class MixinSpawnHelper {
 	@Inject(method = "canSpawn", at = @At("HEAD"), cancellable = true)
-	private static void faeSpawnCancel(SpawnRestriction.Location location, ViewableWorld world, BlockPos pos, @Nullable EntityType<?> type, CallbackInfoReturnable cir) {
+	private static void faeSpawnCancel(SpawnRestriction.Location location, ViewableWorld world, BlockPos pos, EntityType<?> type, CallbackInfoReturnable cir) {
+		if (type == null) return;
 		if (type.getCategory() == EntityCategory.MONSTER) {
 			Chunk spawnIn = world.getChunk(pos);
 			Set<BlockPos> positions = spawnIn.getBlockEntityPositions();
