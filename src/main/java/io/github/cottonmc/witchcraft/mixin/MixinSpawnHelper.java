@@ -2,7 +2,6 @@ package io.github.cottonmc.witchcraft.mixin;
 
 import io.github.cottonmc.witchcraft.block.FaeLanternBlock;
 import io.github.cottonmc.witchcraft.block.WitchcraftBlocks;
-import io.github.cottonmc.witchcraft.block.entity.FaeLanternEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityCategory;
 import net.minecraft.entity.EntityType;

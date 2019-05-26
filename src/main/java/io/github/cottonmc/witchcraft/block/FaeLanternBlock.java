@@ -2,8 +2,6 @@ package io.github.cottonmc.witchcraft.block;
 
 import io.github.cottonmc.witchcraft.block.entity.FaeLanternEntity;
 import io.github.cottonmc.witchcraft.item.WitchcraftItems;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -94,12 +92,6 @@ public class FaeLanternBlock extends LanternBlock implements BlockEntityProvider
 	protected void appendProperties(StateFactory.Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
 		builder.add(PIXIES);
-	}
-
-	@Environment(EnvType.CLIENT)
-	@Override
-	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random rand) {
-		super.randomDisplayTick(state, world, pos, rand);
 	}
 
 	@Override
