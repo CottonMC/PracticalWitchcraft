@@ -3,6 +3,7 @@ package io.github.cottonmc.witchcraft.block;
 import io.github.cottonmc.witchcraft.Witchcraft;
 import io.github.cottonmc.witchcraft.block.entity.FaeLanternEntity;
 import io.github.cottonmc.witchcraft.block.entity.IncenseBurnerEntity;
+import io.github.cottonmc.witchcraft.block.entity.SpellCircleEntity;
 import io.github.cottonmc.witchcraft.block.entity.StoneCauldronEntity;
 import io.github.cottonmc.witchcraft.effect.WitchcraftEffects;
 import io.github.cottonmc.witchcraft.item.WitchcraftItems;
@@ -46,6 +47,7 @@ public class WitchcraftBlocks {
 	public static final BlockEntityType<FaeLanternEntity> FAE_LANTERN_BE = register("fae_lantern", FaeLanternEntity::new, FAE_LANTERN);
 
 	public static final Block SPELL_CIRCLE = register("spell_circle", new SpellCircleBlock(), WitchcraftItems.WITCHCRAFT_GROUP);
+	public static final BlockEntityType<SpellCircleEntity> SPELL_CIRCLE_BE = register("spell_circle", SpellCircleEntity::new, SPELL_CIRCLE);
 
 	public static void init() {
 	}
