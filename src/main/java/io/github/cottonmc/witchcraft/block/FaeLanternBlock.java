@@ -3,6 +3,7 @@ package io.github.cottonmc.witchcraft.block;
 import io.github.cottonmc.witchcraft.block.entity.FaeLanternEntity;
 import io.github.cottonmc.witchcraft.item.WitchcraftItems;
 import net.fabricmc.fabric.api.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.tools.FabricToolTags;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -27,7 +28,7 @@ public class FaeLanternBlock extends LanternBlock implements BlockEntityProvider
 	public static final IntegerProperty PIXIES = IntegerProperty.create("pixies", 0, 7);
 
 	public FaeLanternBlock() {
-		super(FabricBlockSettings.of(Material.METAL).strength(3.5F, 3.5F).sounds(BlockSoundGroup.LANTERN).ticksRandomly().build());
+		super(FabricBlockSettings.of(Material.METAL).strength(3.5F, 3.5F).breakByTool(FabricToolTags.PICKAXES).sounds(BlockSoundGroup.LANTERN).ticksRandomly().build());
 		this.setDefaultState(super.getDefaultState().with(PIXIES, 0));
 	}
 

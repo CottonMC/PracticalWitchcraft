@@ -29,6 +29,7 @@ public class WitchcraftBlocks {
 	public static Block.Settings flowerPot() {
 		return FabricBlockSettings.of(Material.PART).breakInstantly().build();
 	}
+
 	//plants and flowers, along with flowerpots
 	public static final Block BORAGE = register("borage", new FlowerBlock(WitchcraftEffects.IMMUNITY, 7, flower()), WitchcraftItems.WITCHCRAFT_GROUP);
 	public static final Block POTTED_BORAGE = register("potted_borage", new FlowerPotBlock(BORAGE, flowerPot()));
@@ -43,6 +44,8 @@ public class WitchcraftBlocks {
 
 	public static final Block FAE_LANTERN = register("fae_lantern", new FaeLanternBlock(), WitchcraftItems.WITCHCRAFT_GROUP);
 	public static final BlockEntityType<FaeLanternEntity> FAE_LANTERN_BE = register("fae_lantern", FaeLanternEntity::new, FAE_LANTERN);
+
+	public static final Block SPELL_CIRCLE = register("spell_circle", new SpellCircleBlock(), WitchcraftItems.WITCHCRAFT_GROUP);
 
 	public static void init() {
 	}

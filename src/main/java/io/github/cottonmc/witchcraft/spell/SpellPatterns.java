@@ -1,37 +1,61 @@
 package io.github.cottonmc.witchcraft.spell;
 
-import java.util.HashSet;
-import java.util.Set;
+import net.minecraft.util.Identifier;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SpellPatterns {
-	private static Set<ActionPattern> ACTIONS = new HashSet<>();
-	private static Set<TargeterPattern> TARGETERS = new HashSet<>();
-	private static Set<ModifierPattern> MODIFIERS = new HashSet<>();
+	private static Map<Identifier, ActionPattern> ACTIONS = new HashMap<>();
+	private static Map<Identifier, TargeterPattern> TARGETERS = new HashMap<>();
+	private static Map<Identifier, ModifierPattern> MODIFIERS = new HashMap<>();
 
-	public static ActionPattern registerAction(ActionPattern pattern) {
-		ACTIONS.add(pattern);
+	public static ActionPattern registerAction(Identifier id, ActionPattern pattern) {
+		ACTIONS.put(id, pattern);
 		return pattern;
 	}
 
-	public static TargeterPattern registerTargeter(TargeterPattern pattern) {
-		TARGETERS.add(pattern);
+	public static TargeterPattern registerTargeter(Identifier id, TargeterPattern pattern) {
+		TARGETERS.put(id, pattern);
 		return pattern;
 	}
 
-	public static ModifierPattern registerModifier(ModifierPattern pattern) {
-		MODIFIERS.add(pattern);
+	public static ModifierPattern registerModifier(Identifier id, ModifierPattern pattern) {
+		MODIFIERS.put(id, pattern);
 		return pattern;
 	}
 
-	public static Set<ActionPattern> getActions() {
-		return new HashSet<>(ACTIONS);
+	public static ActionPattern getAction(Identifier id) {
+		return ACTIONS.get(id);
 	}
 
-	public static Set<TargeterPattern> getTargeters() {
-		return new HashSet<>(TARGETERS);
+	public static Identifier getActionId(ActionPattern pattern) {
+		for (Identifier id : ACTIONS.keySet()) {
+			if (ACTIONS.get(id) == pattern) return id;
+		}
+		return null;
 	}
 
-	public static Set<ModifierPattern> getModifiers() {
-		return new HashSet<>(MODIFIERS);
+	public static TargeterPattern getTargeter(Identifier id) {
+		return TARGETERS.get(id);
 	}
+
+	public static Identifier getTargeterId(TargeterPattern pattern) {
+		for (Identifier id : TARGETERS.keySet()) {
+			if (TARGETERS.get(id) == pattern) return id;
+		}
+		return null;
+	}
+
+	public static ModifierPattern getModifier(Identifier id) {
+		return MODIFIERS.get(id);
+	}
+
+	public static Identifier getModifierId(ModifierPattern pattern) {
+		for (Identifier id : MODIFIERS.keySet()) {
+			if (MODIFIERS.get(id) == pattern) return id;
+		}
+		return null;
+	}
+
 }
