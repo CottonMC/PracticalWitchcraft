@@ -111,21 +111,25 @@ public class StoneCauldronBlock extends BlockWithEntity implements AttributeProv
 		}
 		if (world.getBlockState(pos.down()).getBlock() == Blocks.CAMPFIRE && !fluid.isEmpty()) {
 			if (fluid.getRawFluid() == Fluids.WATER) {
-				if (stack.getItem() == WitchcraftItems.BROOMSTICK && fluid.getAmount() > FluidVolume.BOTTLE) {
-					CauldronInventoryWrapper wrapper = new CauldronInventoryWrapper(cauldron.previousItems, WitchcraftRecipes.isFireUnder(world, pos));
-					Optional<CauldronRecipe> opt = world.getRecipeManager().getFirstMatch(WitchcraftRecipes.CAULDRON, wrapper, world);
-					if (opt.isPresent()) {
-						CauldronRecipe recipe = opt.get();
-						ItemStack result = recipe.craft(wrapper);
-						drain(world, pos, state, Fluids.WATER, 1);
-						player.increaseStat(Stats.USE_CAULDRON, 1);
-						if (!player.inventory.insertStack(result)) {
-							ItemEntity entity = player.dropItem(result, false);
-							if (entity != null) entity.addScoreboardTag("NoCauldronCollect");
-							world.spawnEntity(entity);
+				if (stack.getItem() == WitchcraftItems.BROOMSTICK) {
+					if (fluid.getAmount() >= FluidVolume.BOTTLE) {
+						CauldronInventoryWrapper wrapper = new CauldronInventoryWrapper(cauldron.previousItems, WitchcraftRecipes.isFireUnder(world, pos));
+						Optional<CauldronRecipe> opt = world.getRecipeManager().getFirstMatch(WitchcraftRecipes.CAULDRON, wrapper, world);
+						if (opt.isPresent()) {
+							world.playSound(null, pos, SoundEvents.ITEM_ARMOR_EQUIP_ELYTRA, SoundCategory.BLOCKS, 1.0f, 1.0f);
+							CauldronRecipe recipe = opt.get();
+							ItemStack result = recipe.craft(wrapper);
+							drain(world, pos, state, Fluids.WATER, 1);
+							cauldron.craft();
+							player.increaseStat(Stats.USE_CAULDRON, 1);
+							if (!player.inventory.insertStack(result)) {
+								ItemEntity entity = player.dropItem(result, false);
+								if (entity != null) entity.addScoreboardTag("NoCauldronCollect");
+								world.spawnEntity(entity);
+							}
 						}
 					}
-				} else {
+				} else if (!stack.isEmpty()) {
 					if (cauldron.addItem(stack)) stack.setAmount(0);
 				}
 			}

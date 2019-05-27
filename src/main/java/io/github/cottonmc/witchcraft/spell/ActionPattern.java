@@ -37,4 +37,8 @@ public abstract class ActionPattern implements SpellPattern {
 	}
 
 	public abstract void performAction(World world, BlockPos pos, PlayerEntity activator, Spell spell);
+
+	public abstract int getSpellDuration(World world, BlockPos pos, PlayerEntity activator, Spell spell);
+
+	public abstract int getSpellCharge(World world, BlockPos pos, PlayerEntity activator, Spell spell);
 }

@@ -1,0 +1,16 @@
+{
+  "type": "witchcraft:cauldron",
+  "ingredients": [
+    {
+      "item": "minecraft:grass"
+    },
+    {
+      "item": "minecraft:lily_of_the_valley"
+    }
+  ],
+  "result": {
+    "item": "minecraft:blue_ice",
+    "count": 1
+  },
+  "needsFire": true
+}

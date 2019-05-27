@@ -1,0 +1,7 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "particle": "witchcraft:block/borage",
+    "cross": "witchcraft:block/borage"
+  }
+}
