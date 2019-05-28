@@ -87,11 +87,11 @@ public class FavorManager {
 				player.removePotionEffect(WitchcraftEffects.CURSED);
 				WitchcraftNetworking.removeEffect((ServerPlayerEntity) player, WitchcraftEffects.CURSED);
 			} else if (favor < 10) {
-				player.removePotionEffect(StatusEffects.HERO_OF_THE_VILLAGE);
-				WitchcraftNetworking.removeEffect((ServerPlayerEntity) player, StatusEffects.HERO_OF_THE_VILLAGE);
+				player.removePotionEffect(WitchcraftEffects.BLESSED);
+				WitchcraftNetworking.removeEffect((ServerPlayerEntity) player, WitchcraftEffects.BLESSED);
 			}
 			if (favor >= 20) {
-				player.addPotionEffect(new StatusEffectInstance(StatusEffects.HERO_OF_THE_VILLAGE, 18000, 0, false, false, true));
+				player.addPotionEffect(new StatusEffectInstance(WitchcraftEffects.BLESSED, 18000, 0, false, false, true));
 			} else if (favor <= -20) {
 				if (amount < 0) curse(player, true);
 				int multiplier = (int) ((favor * -1) - 20) / 10;
@@ -123,13 +123,14 @@ public class FavorManager {
 			player.removePotionEffect(WitchcraftEffects.CURSED);
 			WitchcraftNetworking.removeEffect((ServerPlayerEntity)player, WitchcraftEffects.CURSED);
 		} else if (amount < 10) {
-			player.removePotionEffect(StatusEffects.HERO_OF_THE_VILLAGE);
-			WitchcraftNetworking.removeEffect((ServerPlayerEntity)player, StatusEffects.HERO_OF_THE_VILLAGE);
+			player.removePotionEffect(WitchcraftEffects.BLESSED);
+			WitchcraftNetworking.removeEffect((ServerPlayerEntity)player, WitchcraftEffects.BLESSED);
 		}
 		if (amount >= 20) {
-			player.addPotionEffect(new StatusEffectInstance(StatusEffects.HERO_OF_THE_VILLAGE, 18000, 0, true, false));
+			player.addPotionEffect(new StatusEffectInstance(WitchcraftEffects.BLESSED, 18000, 0, true, false));
 		} else if (amount <= -20) {
-			int multiplier = (int)((amount * -1) - 20) / 5;
+			int multiplier = (int)((amount * -1) - 20) / 10;
+			multiplier = Math.min(multiplier, 5);
 			player.addPotionEffect(new StatusEffectInstance(WitchcraftEffects.CURSED, 18000, multiplier, true, false));
 		}
 	}
@@ -146,6 +147,7 @@ public class FavorManager {
 	public static void bless(PlayerEntity player, boolean deityOnly) {
 		Deity deity = getDevotion(player);
 		if (deity != null) deity.bless(player);
+		if (!deityOnly) player.addPotionEffect(new StatusEffectInstance(WitchcraftEffects.BLESSED, 18000));
 	}
 
 	public static void curse(PlayerEntity player, boolean deityOnly) {

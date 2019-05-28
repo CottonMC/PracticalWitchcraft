@@ -12,9 +12,11 @@ public class WitchcraftEffects {
 	public static StatusEffect IMMUNITY = register("immunity", new ImmunityStatusEffect());
 
 	public static StatusEffect CURSED;
+	public static StatusEffect BLESSED;
 
 	public static void init() {
 		CURSED = register("cursed", new WitchcraftStatusEffect(StatusEffectType.HARMFUL, 0x990a78));
+		BLESSED = register("blessed", new WitchcraftStatusEffect(StatusEffectType.BENEFICIAL, 0x990a78));
 	}
 
 	public static StatusEffect register(String name, StatusEffect effect) {
