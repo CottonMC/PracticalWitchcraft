@@ -44,4 +44,12 @@ public class Deity {
 	public void addDisfavors(Map<Stat, Float> disfavors) {
 		this.disfavors.putAll(disfavors);
 	}
+
+	public void bless(PlayerEntity player) {
+
+	}
+
+	public void curse(PlayerEntity player) {
+
+	}
 }

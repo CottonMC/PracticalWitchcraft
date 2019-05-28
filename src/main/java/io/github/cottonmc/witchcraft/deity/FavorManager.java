@@ -11,8 +11,37 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Identifier;
 
 public class FavorManager {
+	public static void devote(PlayerEntity player, Deity deity) {
+		CompoundTag tag = PlayerData.get(player, Witchcraft.MODID);
+		tag.putString("Devotee", Pantheon.DEITIES.getId(deity).toString());
+		PlayerData.markDirty(player);
+	}
+
+	public static Deity getDevotion(PlayerEntity player) {
+		CompoundTag tag = PlayerData.get(player, Witchcraft.MODID);
+		if (!tag.containsKey("Devotee")) return null;
+		Identifier deityId = new Identifier(tag.getString("Devotee"));
+		return Pantheon.DEITIES.get(deityId);
+	}
+
+	public static boolean isDevotedTo(PlayerEntity player, Deity deity) {
+		CompoundTag tag = PlayerData.get(player, Witchcraft.MODID);
+		if (!tag.containsKey("Devotee", NbtType.STRING)) return false;
+		Identifier deityId = new Identifier(tag.getString("Devotee"));
+		return Pantheon.DEITIES.get(deityId) == deity;
+	}
+
+	public static void forsake(PlayerEntity player) {
+		CompoundTag tag = PlayerData.get(player, Witchcraft.MODID);
+		if (tag.containsKey("Devotee", NbtType.STRING)) {
+			tag.remove("Devotee");
+			curse(player, false);
+		}
+	}
+
 	public static void shiftFavor(PlayerEntity player, Deity deity, float amount) {
 		shiftFavor(player, deity, amount, false);
 	}
@@ -64,7 +93,9 @@ public class FavorManager {
 			if (favor >= 20) {
 				player.addPotionEffect(new StatusEffectInstance(StatusEffects.HERO_OF_THE_VILLAGE, 18000, 0, false, false, true));
 			} else if (favor <= -20) {
-				int multiplier = (int) ((favor * -1) - 20) / 5;
+				if (amount < 0) curse(player, true);
+				int multiplier = (int) ((favor * -1) - 20) / 10;
+				multiplier = Math.min(multiplier, 5);
 				player.addPotionEffect(new StatusEffectInstance(WitchcraftEffects.CURSED, 18000, multiplier, false, false, true));
 			}
 		}
@@ -112,7 +143,15 @@ public class FavorManager {
 		return deities.getCompound(id);
 	}
 
-	public static void curse(PlayerEntity player) {
+	public static void bless(PlayerEntity player, boolean deityOnly) {
+		Deity deity = getDevotion(player);
+		if (deity != null) deity.bless(player);
+	}
+
+	public static void curse(PlayerEntity player, boolean deityOnly) {
+		Deity deity = getDevotion(player);
+		if (deity != null) deity.curse(player);
+		if (deityOnly) return;
 		if (!player.hasStatusEffect(WitchcraftEffects.CURSED)) player.addPotionEffect(new StatusEffectInstance(WitchcraftEffects.CURSED, 120000));
 		else {
 			int level = player.getStatusEffect(WitchcraftEffects.CURSED).getAmplifier();
