@@ -7,11 +7,11 @@ import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.DefaultedList;
 
 public class SpellCircleEntity extends BlockEntity implements BlockEntityClientSerializable {
 	private Spell spell;
-	PlayerEntity activator;
+	private PlayerEntity activator;
+	private boolean hasPixie;
 
 	public SpellCircleEntity() {
 		super(WitchcraftBlocks.SPELL_CIRCLE_BE);
@@ -23,7 +23,10 @@ public class SpellCircleEntity extends BlockEntity implements BlockEntityClientS
 
 	public void beginSpell(PlayerEntity activator) {
 		this.activator = activator;
-		if (spell != null) spell.perform(world, pos, activator);
+		if (spell != null) {
+			spell.perform(world, pos, activator);
+			this.hasPixie = false;
+		}
 		markDirty();
 	}
 
@@ -32,11 +35,25 @@ public class SpellCircleEntity extends BlockEntity implements BlockEntityClientS
 		markDirty();
 	}
 
+	public Spell getSpell() {
+		return spell;
+	}
+
+	public boolean hasPixie() {
+		return hasPixie;
+	}
+
+	public void addPixie() {
+		hasPixie = true;
+		markDirty();
+	}
+
 	@Override
 	public void fromTag(CompoundTag tag) {
 		super.fromTag(tag);
 		if (tag.containsKey("Spell", NbtType.COMPOUND)) this.spell = Spell.fromTag(tag.getCompound("Spell"));
 		if (tag.containsKey("ActivatorMost", NbtType.LONG)) this.activator = world.getPlayerByUuid(tag.getUuid("Activator"));
+		hasPixie = tag.getBoolean("HasPixie");
 	}
 
 	@Override
@@ -44,6 +61,7 @@ public class SpellCircleEntity extends BlockEntity implements BlockEntityClientS
 		super.toTag(tag);
 		if (spell != null) tag.put("Spell", spell.toTag());
 		if (activator != null) tag.putUuid("Activator", activator.getUuid());
+		tag.putBoolean("HasPixie", hasPixie);
 		return tag;
 	}
 
