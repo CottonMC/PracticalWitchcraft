@@ -8,6 +8,9 @@ import net.minecraft.util.Identifier;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A deity of the world, which a player can pray to.
+ */
 public class Deity {
 	private Map<Stat, Float> favors = new HashMap<>();
 	private Map<Stat, Float> disfavors = new HashMap<>();
