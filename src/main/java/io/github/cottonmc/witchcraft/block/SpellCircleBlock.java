@@ -1,6 +1,7 @@
 package io.github.cottonmc.witchcraft.block;
 
 import io.github.cottonmc.witchcraft.block.entity.SpellCircleEntity;
+import io.github.cottonmc.witchcraft.effect.WitchcraftEffects;
 import io.github.cottonmc.witchcraft.item.WitchcraftItems;
 import io.github.cottonmc.witchcraft.spell.Spell;
 import net.fabricmc.fabric.api.block.FabricBlockSettings;
@@ -12,6 +13,7 @@ import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -20,6 +22,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.explosion.Explosion;
 
 import java.util.Random;
 
@@ -36,7 +39,17 @@ public class SpellCircleBlock extends Block implements BlockEntityProvider {
 					|| world.getBlockTickScheduler().isTicking(pos, WitchcraftBlocks.SPELL_CIRCLE)) return true;
 			ItemStack stack = player.getStackInHand(hand);
 			SpellCircleEntity be = (SpellCircleEntity) world.getBlockEntity(pos);
-			if (be.hasPixie() && stack.getItem() == WitchcraftItems.BROOMSTICK) be.beginSpell(player);
+			if (be.hasPixie() && stack.getItem() == WitchcraftItems.BROOMSTICK) {
+				if (player.hasStatusEffect(WitchcraftEffects.CURSED)) {
+					int level = player.getStatusEffect(WitchcraftEffects.CURSED).getAmplifier() + 1;
+					if (world.getRandom().nextInt(20) <= level) {
+						world.createExplosion(null, DamageSource.MAGIC, pos.getX(), pos.getY(), pos.getZ(), 3f, true, Explosion.DestructionType.NONE);
+						world.breakBlock(pos, false);
+						return true;
+					}
+				}
+				be.beginSpell(player);
+			}
 			else if (stack.getItem() == WitchcraftItems.BOTTLED_PIXIE) {
 				ItemStack bottle = new ItemStack(Items.GLASS_BOTTLE);
 				if (!player.isCreative()) {

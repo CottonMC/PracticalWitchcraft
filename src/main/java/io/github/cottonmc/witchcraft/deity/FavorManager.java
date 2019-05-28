@@ -128,6 +128,7 @@ public class FavorManager {
 		}
 		if (amount >= 20) {
 			player.addPotionEffect(new StatusEffectInstance(WitchcraftEffects.BLESSED, 18000, 0, true, false));
+			deity.bless(player);
 		} else if (amount <= -20) {
 			int multiplier = (int)((amount * -1) - 20) / 10;
 			multiplier = Math.min(multiplier, 5);
