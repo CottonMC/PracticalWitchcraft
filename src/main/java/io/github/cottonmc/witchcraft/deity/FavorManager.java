@@ -91,9 +91,10 @@ public class FavorManager {
 				WitchcraftNetworking.removeEffect((ServerPlayerEntity) player, WitchcraftEffects.BLESSED);
 			}
 			if (favor >= 20) {
+				if (amount > 1) bless(player, true);
 				player.addPotionEffect(new StatusEffectInstance(WitchcraftEffects.BLESSED, 18000, 0, false, false, true));
 			} else if (favor <= -20) {
-				if (amount < 0) curse(player, true);
+				if (amount < -1) curse(player, true);
 				int multiplier = (int) ((favor * -1) - 20) / 10;
 				multiplier = Math.min(multiplier, 5);
 				player.addPotionEffect(new StatusEffectInstance(WitchcraftEffects.CURSED, 18000, multiplier, false, false, true));

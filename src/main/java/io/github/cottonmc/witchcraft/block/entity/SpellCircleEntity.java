@@ -7,6 +7,8 @@ import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 
 public class SpellCircleEntity extends BlockEntity implements BlockEntityClientSerializable {
 	private Spell spell;
@@ -31,7 +33,14 @@ public class SpellCircleEntity extends BlockEntity implements BlockEntityClientS
 	}
 
 	public void performSpell() {
-		if (spell != null) spell.perform(world, pos, activator);
+		if (spell != null) {
+			int performances = spell.getPerformances();
+			int breakChance = world.getRandom().nextInt(15);
+			if (performances - 15 < breakChance) spell.perform(world, pos, activator);
+			else {
+				world.playSound(null, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1f, 1f);
+			}
+		}
 		markDirty();
 	}
 

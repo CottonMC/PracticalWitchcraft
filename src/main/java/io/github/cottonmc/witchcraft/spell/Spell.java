@@ -51,6 +51,10 @@ public class Spell {
 		return entities;
 	}
 
+	public int getPerformances() {
+		return performances;
+	}
+
 	public void perform(World world, BlockPos pos, PlayerEntity activator) {
 		int result = action.performAction(world, pos, activator,this, performances);
 		if (result > 0) world.getBlockTickScheduler().schedule(pos, WitchcraftBlocks.SPELL_CIRCLE, result);
