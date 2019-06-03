@@ -11,7 +11,6 @@ import io.github.cottonmc.witchcraft.item.WitchcraftItems;
 import io.github.cottonmc.witchcraft.recipe.CauldronInventoryWrapper;
 import io.github.cottonmc.witchcraft.recipe.CauldronRecipe;
 import io.github.cottonmc.witchcraft.recipe.WitchcraftRecipes;
-import io.github.cottonmc.witchcraft.util.BucketUtil;
 import io.github.cottonmc.witchcraft.block.entity.StoneCauldronEntity;
 import io.github.cottonmc.cotton.cauldron.Cauldron;
 import io.github.cottonmc.cotton.cauldron.CauldronBehavior;
@@ -99,9 +98,12 @@ public class StoneCauldronBlock extends BlockWithEntity implements AttributeProv
 		}
 		Item item = stack.getItem();
 		if (item instanceof BucketItem) {
-			if (stack.getItem() == Items.BUCKET && fluid.getAmount() >= FluidVolume.BUCKET) {
-				if (!player.isCreative())
-					player.setStackInHand(hand, BucketUtil.fillBucketFromFluid(stack, fluid.getRawFluid()));
+			if (item == Items.BUCKET && fluid.getAmount() >= FluidVolume.BUCKET) {
+				if (!player.isCreative()) {
+					Ref<ItemStack> refStack = new Ref<>(stack);
+					((FluidProviderItem) item).fill(refStack, new Ref<>(fluid));
+					player.setStackInHand(hand, refStack.obj);
+				}
 				drain(world, pos, state, fluid.getRawFluid(), 3);
 				SoundEvent event = fluid.getRawFluid() == Fluids.LAVA? SoundEvents.ITEM_BUCKET_FILL_LAVA : SoundEvents.ITEM_BUCKET_FILL;
 				world.playSound(null, pos, event, SoundCategory.BLOCKS, 1.0f, 1.0f);
