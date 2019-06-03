@@ -3,8 +3,10 @@ package io.github.cottonmc.witchcraft.block;
 import alexiil.mc.lib.attributes.AttributeList;
 import alexiil.mc.lib.attributes.AttributeProvider;
 import alexiil.mc.lib.attributes.Simulation;
+import alexiil.mc.lib.attributes.fluid.FluidProviderItem;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import alexiil.mc.lib.attributes.fluid.volume.NormalFluidVolume;
+import alexiil.mc.lib.attributes.misc.Ref;
 import io.github.cottonmc.witchcraft.item.WitchcraftItems;
 import io.github.cottonmc.witchcraft.recipe.CauldronInventoryWrapper;
 import io.github.cottonmc.witchcraft.recipe.CauldronRecipe;
@@ -24,9 +26,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BucketItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.BooleanBiFunction;
@@ -93,19 +97,21 @@ public class StoneCauldronBlock extends BlockWithEntity implements AttributeProv
 			}
 			return true;
 		}
-		if (stack.getItem() instanceof BucketItem) {
+		Item item = stack.getItem();
+		if (item instanceof BucketItem) {
 			if (stack.getItem() == Items.BUCKET && fluid.getAmount() >= FluidVolume.BUCKET) {
 				if (!player.isCreative())
 					player.setStackInHand(hand, BucketUtil.fillBucketFromFluid(stack, fluid.getRawFluid()));
 				drain(world, pos, state, fluid.getRawFluid(), 3);
-				world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0f, 1.0f);
+				SoundEvent event = fluid.getRawFluid() == Fluids.LAVA? SoundEvents.ITEM_BUCKET_FILL_LAVA : SoundEvents.ITEM_BUCKET_FILL;
+				world.playSound(null, pos, event, SoundCategory.BLOCKS, 1.0f, 1.0f);
 				return true;
 			}
-			//TODO: remove restriction to water bucket only once renderer is fixed
-			else if (fluid.isEmpty() && stack.getItem() == Items.WATER_BUCKET) {
+			else if (fluid.isEmpty()) {
 				if (!player.isCreative()) player.setStackInHand(hand, new ItemStack(Items.BUCKET));
-				cauldron.fluid.setInvFluid(0, BucketUtil.getBucketFluid(stack), Simulation.ACTION);
-				world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0f, 1.0f);
+				cauldron.fluid.setInvFluid(0, ((FluidProviderItem)item).drain(new Ref<>(stack)), Simulation.ACTION);
+				SoundEvent event = item == Items.LAVA_BUCKET? SoundEvents.ITEM_BUCKET_EMPTY_LAVA : SoundEvents.ITEM_BUCKET_EMPTY;
+				world.playSound(null, pos, event, SoundCategory.BLOCKS, 1.0f, 1.0f);
 				return true;
 			}
 		}
