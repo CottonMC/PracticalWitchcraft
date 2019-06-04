@@ -36,7 +36,6 @@ public class IncenseBurnerEntity extends BlockEntity implements BlockEntityClien
 		world.playSound(null, pos, SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.BLOCKS, 1.0f, 1.0f);
 		for (Object obj : PlayerStream.around(this.world, this.pos, 5d).toArray()) {
 			PlayerEntity player = (PlayerEntity)obj;
-			//TODO: make fancy with an API to add incense sticks or something
 			if (incense.getItem() instanceof IncenseStickItem) {
 				IncenseStickItem stick = (IncenseStickItem) incense.getItem();
 				stick.getAction().purge(player);

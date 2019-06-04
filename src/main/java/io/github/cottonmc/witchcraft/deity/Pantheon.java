@@ -26,24 +26,7 @@ public class Pantheon {
 		DEITIES = temp_init;
 	}
 
-	public static Deity NATURE = register("nature", new Deity(deity -> {
-		Map<Stat, Float> favors = new HashMap<>();
-		Map<Stat, Float> disfavors = new HashMap<>();
-		List<Item> plants = new ArrayList<>(ItemTags.SAPLINGS.values());
-		plants.addAll(CommonTags.PLANTABLES.values());
-		for (Item item : plants) {
-			Stat stat = Stats.USED.getOrCreateStat(item);
-			favors.put(stat, 0.01f);
-		}
-
-		EntityType[] rare_passives = new EntityType[]{EntityType.TURTLE, EntityType.POLAR_BEAR, EntityType.FOX, EntityType.PANDA};
-		for (EntityType type : rare_passives) {
-			Stat stat = Stats.KILLED.getOrCreateStat(type);
-			disfavors.put(stat, 1f);
-		}
-		deity.addFavors(favors);
-		deity.addDisfavors(disfavors);
-	}));
+	public static Deity NATURE = register("nature", new NatureDeity());
 
 	public static void init() {
 	}
