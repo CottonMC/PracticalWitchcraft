@@ -39,6 +39,8 @@ public class WitchcraftItems {
 	public static Item FAE_FIRE = register("fae_fire", new Item(new Item.Settings().itemGroup(WITCHCRAFT_GROUP).recipeRemainder(Items.GLASS_BOTTLE)));
 	public static Item BOTTLED_PIXIE = register("bottled_pixie", new Item(new Item.Settings().itemGroup(WITCHCRAFT_GROUP).recipeRemainder(Items.GLASS_BOTTLE)));
 
+	public static Item DEBUG = register("favor_debug", new FavorDebugItem());
+
 	public static void init() {
 		BROOMSTICK = register("broomstick", new Item(new Item.Settings().itemGroup(WITCHCRAFT_GROUP).stackSize(1)));
 	}

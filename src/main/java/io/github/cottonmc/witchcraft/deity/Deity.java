@@ -61,7 +61,7 @@ public abstract class Deity {
 		String key = "deity." + id.getNamespace() + "." + id.getPath();
 		if (player != null) {
 			String subkey = getNameSubkey(player);
-			if (!subkey.equals("")) key += "." + subkey;
+			if (subkey != null && !subkey.equals("")) key += "." + subkey;
 		}
 		TranslatableComponent component = new TranslatableComponent(key);
 		if (nameFormat != null) component.applyFormat(nameFormat);
@@ -72,7 +72,7 @@ public abstract class Deity {
 	 * Names are a powerful thing. Deities may be picky about what names They go by when interacting with a given player.
 	 * Deity name subkeys are not applied when there is no associated player.
 	 * @param player The player the Deity is interacting with.
-	 * @return The sub-key to be appended to the Deity's standard key of "deity.namespace.path". Return "" for no added subkey.
+	 * @return The sub-key to be appended to the Deity's standard key of "deity.namespace.path". Return "" or null for no added subkey.
 	 */
 	public abstract String getNameSubkey(PlayerEntity player);
 

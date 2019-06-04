@@ -2,6 +2,10 @@
   "block.witchcraft.stone_cauldron": "Stone Cauldron",
   "block.witchcraft.incense_burner": "Incense Burner",
   "block.witchcraft.fae_lantern": "Fae Lantern",
+  "block.witchcraft.borage": "Borage",
+  "block.witchcraft.potted_borage": "Potted Borage",
+  "block.witchcraft.pink_borage": "Pink Borage",
+  "block.witchcraft.potted_pink_borage": "Potted Pink Borage",
 
   "item.witchcraft.broomstick": "Broomstick",
   "item.witchcraft.purging_incense": "Purging Incense",
@@ -12,10 +16,13 @@
 
   "effect.witchcraft.immunity": "Immunity",
 
+  "deity.witchcraft.nature": "Mother Nature",
+
   "msg.witchcraft.favor.gain": "You feel %s smile upon you.",
   "msg.witchcraft.favor.lose": "You feel %s frown upon your actions.",
   "msg.witchcraft.fae.none": "There are no pixies at this lantern.",
   "msg.witchcraft.fae.one": "There is one pixies at this lantern.",
   "msg.witchcraft.fae.few": "There are a few pixies at this lantern.",
-  "msg.witchcraft.fae.many": "Pixies are swarming around the lantern!"
+  "msg.witchcraft.fae.many": "Pixies are swarming around the lantern!",
+  "msg.witchcraft.nature.kill": "You feel %s's wrath rushing upon you."
 }
