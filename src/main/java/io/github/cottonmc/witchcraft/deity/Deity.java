@@ -1,6 +1,8 @@
 package io.github.cottonmc.witchcraft.deity;
 
 import net.minecraft.ChatFormat;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -10,6 +12,7 @@ import net.minecraft.util.Identifier;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -114,18 +117,32 @@ public abstract class Deity {
 	}
 
 	/**
-	 * When a Deity is sufficiently pleased with a player, They will give the player a blessing.
-	 * This blessing is related to the Deity's domain, and how much They favor the player.
-	 * @param player The player being blessed.
-	 * @param totalFavor How much favor the player currently has with this Deity.
+	 * Send a status message to a player in reaction to a favor change from this Deity.
+	 * @param player The player to apply to.
+	 * @param currentFavor What the player's new favor total with this Deity is.
+	 * @param changeAmount How much the player's favor total just changed.
+	 * @param intRollover Whether the player's favor with this Deity just changed its integer value.
+	 * @return The message to send, or null for none.
 	 */
-	public abstract void bless(PlayerEntity player, float totalFavor);
+	@Nullable
+	public abstract Component getFavorMessage(PlayerEntity player, float currentFavor, float changeAmount, boolean intRollover);
 
 	/**
-	 * When a Deity is sufficiently displeased with a player, They will give the player a curse.
-	 * This curse is related to the Deity's domain, and how much They disfavor the player.
-	 * @param player The player being cursed.
-	 * @param totalFavoravor How much disfavor the player currently has with this Deity, as a negative number.
+	 * Apply status effects to a player in reaction to a favor change from this Deity.
+	 * @param player The player to apply to.
+	 * @param currentFavor What the player's new favor total with this Deity is.
+	 * @param changeAmount How much the player's favor total just changed.
+	 * @param intRollover Whether the player's favor with this Deity just changed its integer value.
+	 * @return A list of status effect instances to apply to the player right now. Can be empty.
 	 */
-	public abstract void curse(PlayerEntity player, float totalFavoravor);
+	public abstract List<StatusEffectInstance> getFavorEffects(PlayerEntity player, float currentFavor, float changeAmount, boolean intRollover);
+
+	/**
+	 * Apply any additional actions, such as removing status effects, to a player in reaction to a favor change from this Deity.
+	 * @param player The player to apply to.
+	 * @param currentFavor What the player's new favor total with this Deity is.
+	 * @param changeAmount How much the player's favor total just changed.
+	 * @param intRollover Whether the player's favor with this Deity just changed its integer value.
+	 */
+	public abstract void applyExtraFavorActions(PlayerEntity player, float currentFavor, float changeAmount, boolean intRollover);
 }

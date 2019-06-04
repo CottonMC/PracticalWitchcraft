@@ -6,7 +6,6 @@ import io.github.cottonmc.witchcraft.util.WitchcraftNetworking;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.client.network.packet.EntityPotionEffectS2CPacket;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -22,14 +21,14 @@ public class WitchcraftItems {
 	public static final ItemGroup WITCHCRAFT_GROUP = FabricItemGroupBuilder.build(new Identifier(Witchcraft.MODID, "main_group"), () -> new ItemStack(BROOMSTICK));
 
 	public static Item PURGING_INCENSE = register("purging_incense", new IncenseStickItem((player) -> {
-		if (player.hasStatusEffect(WitchcraftEffects.CURSED)) {
-			StatusEffectInstance inst = player.getStatusEffect(WitchcraftEffects.CURSED);
+		if (player.hasStatusEffect(WitchcraftEffects.FIZZLE)) {
+			StatusEffectInstance inst = player.getStatusEffect(WitchcraftEffects.FIZZLE);
 			int level = inst.getAmplifier();
 			int time = inst.getDuration();
-			player.removePotionEffect(WitchcraftEffects.CURSED);
-			WitchcraftNetworking.removeEffect((ServerPlayerEntity) player, WitchcraftEffects.CURSED);
+			player.removePotionEffect(WitchcraftEffects.FIZZLE);
+			WitchcraftNetworking.removeEffect((ServerPlayerEntity) player, WitchcraftEffects.FIZZLE);
 			if (level != 0) {
-				StatusEffectInstance newInst = new StatusEffectInstance(WitchcraftEffects.CURSED, time, level - 1, false, false, true);
+				StatusEffectInstance newInst = new StatusEffectInstance(WitchcraftEffects.FIZZLE, time, level - 1, false, false, true);
 				player.addPotionEffect(newInst);
 				((ServerPlayerEntity) player).networkHandler.sendPacket(new EntityPotionEffectS2CPacket(player.getEntityId(), newInst));
 			}

@@ -11,12 +11,14 @@ public class WitchcraftEffects {
 	//this will cause a missing translation to be logged! Everything's fine, don't worry!
 	public static StatusEffect IMMUNITY = register("immunity", new ImmunityStatusEffect());
 
-	public static StatusEffect CURSED;
-	public static StatusEffect BLESSED;
+	public static StatusEffect GREEN_THUMB;
+	public static StatusEffect BROWN_THUMB;
+	public static StatusEffect FIZZLE;
 
 	public static void init() {
-		CURSED = register("cursed", new WitchcraftStatusEffect(StatusEffectType.HARMFUL, 0x990a78));
-		BLESSED = register("blessed", new WitchcraftStatusEffect(StatusEffectType.BENEFICIAL, 0x990a78));
+		GREEN_THUMB = register("green_thumb", new GreenThumbStatusEffect());
+		BROWN_THUMB = register("brown_thumb", new BrownThumbStatusEffect());
+		FIZZLE = register("fizzle", new WitchcraftStatusEffect(StatusEffectType.HARMFUL, 0x990a78));
 	}
 
 	public static StatusEffect register(String name, StatusEffect effect) {

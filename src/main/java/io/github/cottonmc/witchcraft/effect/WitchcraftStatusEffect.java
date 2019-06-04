@@ -8,4 +8,5 @@ public class WitchcraftStatusEffect extends StatusEffect {
 	public WitchcraftStatusEffect(StatusEffectType type, int color) {
 		super(type, color);
 	}
+
 }

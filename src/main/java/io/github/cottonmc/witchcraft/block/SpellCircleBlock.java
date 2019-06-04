@@ -40,8 +40,8 @@ public class SpellCircleBlock extends Block implements BlockEntityProvider {
 			ItemStack stack = player.getStackInHand(hand);
 			SpellCircleEntity be = (SpellCircleEntity) world.getBlockEntity(pos);
 			if (be.hasPixie() && stack.getItem() == WitchcraftItems.BROOMSTICK) {
-				if (player.hasStatusEffect(WitchcraftEffects.CURSED)) {
-					int level = player.getStatusEffect(WitchcraftEffects.CURSED).getAmplifier() + 1;
+				if (player.hasStatusEffect(WitchcraftEffects.FIZZLE)) {
+					int level = player.getStatusEffect(WitchcraftEffects.FIZZLE).getAmplifier() + 1;
 					if (world.getRandom().nextInt(20) <= level) {
 						world.createExplosion(null, DamageSource.MAGIC, pos.getX(), pos.getY(), pos.getZ(), 3f, true, Explosion.DestructionType.NONE);
 						world.breakBlock(pos, false);

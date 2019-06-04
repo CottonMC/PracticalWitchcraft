@@ -28,8 +28,6 @@ public class FavorDebugItem extends Item {
 		if (!tag.containsKey("Deity", NbtType.STRING) || (!tag.containsKey("Amount", NbtType.FLOAT) && !tag.containsKey("Reset"))) return new TypedActionResult<>(ActionResult.PASS, stack);
 		Identifier id = new Identifier(tag.getString("Deity"));
 		Deity deity = Pantheon.DEITIES.get(id);
-		System.out.println(id.toString());
-		System.out.println(deity);
 		if (tag.containsKey("Reset")) {
 			FavorManager.resetFavor(player, deity);
 			player.addChatMessage(new TextComponent("Reset favor"), true);
