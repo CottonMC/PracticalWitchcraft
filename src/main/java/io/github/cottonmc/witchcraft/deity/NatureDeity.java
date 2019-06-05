@@ -3,7 +3,6 @@ package io.github.cottonmc.witchcraft.deity;
 import io.github.cottonmc.cotton.registry.CommonTags;
 import io.github.cottonmc.witchcraft.effect.WitchcraftEffects;
 import net.minecraft.ChatFormat;
-import net.minecraft.block.PlantBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
@@ -55,6 +54,9 @@ public class NatureDeity extends Deity {
 	@Override
 	public Component getFavorMessage(PlayerEntity player, float currentFavor, float changeAmount, boolean intRollover) {
 		if (intRollover) {
+			if (currentFavor <= -40) {
+				return new TranslatableComponent("msg.witchcraft.nature.kill", getName(player).getFormattedText());
+			}
 			if (changeAmount > 0) {
 				return new TranslatableComponent("msg.witchcraft.favor.gain", getName(player).getFormattedText());
 			} else if (changeAmount < 0) {
@@ -68,7 +70,7 @@ public class NatureDeity extends Deity {
 	public List<StatusEffectInstance> getFavorEffects(PlayerEntity player, float currentFavor, float changeAmount, boolean intRollover) {
 		List<StatusEffectInstance> effects = new ArrayList<>();
 		if (changeAmount < 0) {
-			effects.add(new StatusEffectInstance(WitchcraftEffects.BROWN_THUMB, 640));
+			effects.add(new StatusEffectInstance(WitchcraftEffects.BROWN_THUMB, 640, 0, true, false, true));
 		}
 		return effects;
 	}

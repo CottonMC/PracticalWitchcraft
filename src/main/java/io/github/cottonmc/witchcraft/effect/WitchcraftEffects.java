@@ -13,11 +13,13 @@ public class WitchcraftEffects {
 
 	public static StatusEffect GREEN_THUMB;
 	public static StatusEffect BROWN_THUMB;
+	public static StatusEffect FLARE;
 	public static StatusEffect FIZZLE;
 
 	public static void init() {
 		GREEN_THUMB = register("green_thumb", new GreenThumbStatusEffect());
 		BROWN_THUMB = register("brown_thumb", new BrownThumbStatusEffect());
+		FLARE = register("flare", new WitchcraftStatusEffect(StatusEffectType.BENEFICIAL, 0x3dc3e1));
 		FIZZLE = register("fizzle", new WitchcraftStatusEffect(StatusEffectType.HARMFUL, 0x990a78));
 	}
 
