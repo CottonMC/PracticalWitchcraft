@@ -70,7 +70,7 @@ public class NatureDeity extends Deity {
 	public List<StatusEffectInstance> getFavorEffects(PlayerEntity player, float currentFavor, float changeAmount, boolean intRollover) {
 		List<StatusEffectInstance> effects = new ArrayList<>();
 		if (changeAmount < 0) {
-			effects.add(new StatusEffectInstance(WitchcraftEffects.BROWN_THUMB, 640, 0, true, false, true));
+			effects.add(new StatusEffectInstance(WitchcraftEffects.DECAY_TOUCH, 640, 0, true, false, true));
 		}
 		return effects;
 	}

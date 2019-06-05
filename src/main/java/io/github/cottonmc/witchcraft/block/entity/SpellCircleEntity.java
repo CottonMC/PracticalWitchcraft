@@ -26,6 +26,7 @@ public class SpellCircleEntity extends BlockEntity implements BlockEntityClientS
 	public void beginSpell(PlayerEntity activator) {
 		this.activator = activator;
 		if (spell != null) {
+			spell.initialize();
 			spell.perform(world, pos, activator);
 			this.hasPixie = false;
 		}

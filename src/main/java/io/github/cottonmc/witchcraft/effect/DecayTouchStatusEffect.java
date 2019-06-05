@@ -14,8 +14,8 @@ import net.minecraft.item.Items;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 
-public class BrownThumbStatusEffect extends StatusEffect {
-	public BrownThumbStatusEffect() {
+public class DecayTouchStatusEffect extends StatusEffect {
+	public DecayTouchStatusEffect() {
 		super(StatusEffectType.HARMFUL, 0x5d4a75);
 	}
 
