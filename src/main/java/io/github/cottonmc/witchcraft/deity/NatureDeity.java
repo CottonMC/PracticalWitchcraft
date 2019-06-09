@@ -67,17 +67,10 @@ public class NatureDeity extends Deity {
 	}
 
 	@Override
-	public List<StatusEffectInstance> getFavorEffects(PlayerEntity player, float currentFavor, float changeAmount, boolean intRollover) {
-		List<StatusEffectInstance> effects = new ArrayList<>();
+	public void affectPlayer(PlayerEntity player, float currentFavor, float changeAmount, boolean intRollover) {
 		if (changeAmount < 0) {
-			effects.add(new StatusEffectInstance(WitchcraftEffects.DECAY_TOUCH, 640, 0, true, false, true));
+			player.addPotionEffect(new StatusEffectInstance(WitchcraftEffects.DECAY_TOUCH, 640, 0, true, false, true));
 		}
-		return effects;
-	}
-
-	@Override
-	public void applyExtraFavorActions(PlayerEntity player, float currentFavor, float changeAmount, boolean intRollover) {
-
 	}
 
 }

@@ -4,6 +4,7 @@ import io.github.cottonmc.witchcraft.effect.WitchcraftEffects;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.Potions;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,6 +20,7 @@ public class MixinPotions {
 	public static Potion MUNDANE = reregister("mundane", new Potion(new StatusEffectInstance(WitchcraftEffects.IMMUNITY, 3600)));
 
 	private static Potion reregister(String name, Potion potion) {
-		return Registry.register(Registry.POTION, name, potion);
+		int value = Registry.POTION.getRawId(Registry.POTION.get(new Identifier(name)));
+		return Registry.register(Registry.POTION, value, name, potion);
 	}
 }

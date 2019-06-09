@@ -98,12 +98,8 @@ public class FavorManager {
 		if (passive) return;
 		boolean rollover = oldFavor != newFavor;
 		Component message = deity.getFavorMessage(player, favor, amount, rollover);
-		List<StatusEffectInstance> effects = deity.getFavorEffects(player, favor, amount, rollover);
 		if (message != null) player.addChatMessage(message, true);
-		for (StatusEffectInstance effect : effects) {
-			player.addPotionEffect(effect);
-		}
-		deity.applyExtraFavorActions(player, favor, amount, rollover);
+		deity.affectPlayer(player, favor, amount, rollover);
 	}
 
 	/**
@@ -138,12 +134,8 @@ public class FavorManager {
 		if (passive) return;
 		boolean rollover = Math.abs(amount) >= 1;
 		Component message = deity.getFavorMessage(player, favor, amount, rollover);
-		List<StatusEffectInstance> effects = deity.getFavorEffects(player, favor, amount, rollover);
 		if (message != null) player.addChatMessage(message, true);
-		for (StatusEffectInstance effect : effects) {
-			player.addPotionEffect(effect);
-		}
-		deity.applyExtraFavorActions(player, favor, amount, rollover);
+		deity.affectPlayer(player, favor, amount, rollover);
 	}
 
 	/**

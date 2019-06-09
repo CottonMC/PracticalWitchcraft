@@ -1,7 +1,6 @@
 package io.github.cottonmc.witchcraft.deity;
 
 import net.minecraft.ChatFormat;
-import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.chat.Component;
@@ -128,21 +127,11 @@ public abstract class Deity {
 	public abstract Component getFavorMessage(PlayerEntity player, float currentFavor, float changeAmount, boolean intRollover);
 
 	/**
-	 * Apply status effects to a player in reaction to a favor change from this Deity.
-	 * @param player The player to apply to.
-	 * @param currentFavor What the player's new favor total with this Deity is.
-	 * @param changeAmount How much the player's favor total just changed.
-	 * @param intRollover Whether the player's favor with this Deity just changed its integer value.
-	 * @return A list of status effect instances to apply to the player right now. Can be empty.
-	 */
-	public abstract List<StatusEffectInstance> getFavorEffects(PlayerEntity player, float currentFavor, float changeAmount, boolean intRollover);
-
-	/**
-	 * Apply any additional actions, such as removing status effects, to a player in reaction to a favor change from this Deity.
+	 * Apply any effects to a player in reaction to a favor change from this Deity.
 	 * @param player The player to apply to.
 	 * @param currentFavor What the player's new favor total with this Deity is.
 	 * @param changeAmount How much the player's favor total just changed.
 	 * @param intRollover Whether the player's favor with this Deity just changed its integer value.
 	 */
-	public abstract void applyExtraFavorActions(PlayerEntity player, float currentFavor, float changeAmount, boolean intRollover);
+	public abstract void affectPlayer(PlayerEntity player, float currentFavor, float changeAmount, boolean intRollover);
 }
