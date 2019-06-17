@@ -1,7 +1,7 @@
 package io.github.cottonmc.witchcraft.recipe;
 
-import io.github.cottonmc.cotton.tweaker.RecipeParser;
-import io.github.cottonmc.cotton.tweaker.RecipeTweaker;
+import io.github.cottonmc.libcd.tweaker.RecipeParser;
+import io.github.cottonmc.libcd.tweaker.RecipeTweaker;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.DefaultedList;

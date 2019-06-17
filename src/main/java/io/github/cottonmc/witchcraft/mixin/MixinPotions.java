@@ -10,17 +10,14 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(Potions.class)
 public class MixinPotions {
 
-	@Shadow
-	@Mutable
-	@Final
-	public static Potion MUNDANE = reregister("mundane", new Potion(new StatusEffectInstance(WitchcraftEffects.IMMUNITY, 3600)));
-
-	private static Potion reregister(String name, Potion potion) {
-		int value = Registry.POTION.getRawId(Registry.POTION.get(new Identifier(name)));
-		return Registry.register(Registry.POTION, value, name, potion);
+	@ModifyArg(method = "<clinit>", at = @At(value = "INVOKE", target = "Lnet/minecraft/potion/Potions;register(Ljava/lang/String;Lnet/minecraft/potion/Potion;)Lnet/minecraft/potion/Potion;", ordinal = 2))
+	private static Potion changeMundanePotion(Potion original) {
+		return new Potion(new StatusEffectInstance(WitchcraftEffects.IMMUNITY, 3600));
 	}
 }
