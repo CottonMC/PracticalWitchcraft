@@ -20,7 +20,7 @@ public abstract class MixinMilkBucket extends Item {
 		super(settings);
 	}
 
-	@Inject(method = "onItemFinishedUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;clearPotionEffects()Z"), cancellable = true)
+	@Inject(method = "finishUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;clearPotionEffects()Z"), cancellable = true)
 	public void removeBadOmenClear(ItemStack stack, World world, LivingEntity user, CallbackInfoReturnable cir) {
 		//TODO: put in config
 		if (user.hasStatusEffect(WitchcraftEffects.FIZZLE)) {

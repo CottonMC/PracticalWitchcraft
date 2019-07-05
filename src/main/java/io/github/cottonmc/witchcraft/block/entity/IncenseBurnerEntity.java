@@ -45,7 +45,7 @@ public class IncenseBurnerEntity extends BlockEntity implements BlockEntityClien
 		if (purges > 0) {
 			world.getBlockTickScheduler().schedule(pos, WitchcraftBlocks.INCENSE_BURNER, 100);
 		} else {
-			incense.subtractAmount(1);
+			incense.decrement(1);
 		}
 		markDirty();
 	}
@@ -56,14 +56,14 @@ public class IncenseBurnerEntity extends BlockEntity implements BlockEntityClien
 
 	public ItemStack removeIncense() {
 		ItemStack ret = incense.copy();
-		incense.subtractAmount(1);
+		incense.decrement(1);
 		markDirty();
 		return ret;
 	}
 
 	public void setIncense(ItemStack stack) {
 		incense = stack.copy();
-		incense.setAmount(1);
+		incense.setCount(1);
 		markDirty();
 	}
 

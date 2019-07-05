@@ -3,14 +3,12 @@ package io.github.cottonmc.witchcraft.deity;
 import com.raphydaphy.crochet.data.PlayerData;
 import io.github.cottonmc.witchcraft.Witchcraft;
 import net.fabricmc.fabric.api.util.NbtType;
-import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 /**
  * Utility class for managing Deity favor.
@@ -97,7 +95,7 @@ public class FavorManager {
 		PlayerData.markDirty(player);
 		if (passive) return;
 		boolean rollover = oldFavor != newFavor;
-		Component message = deity.getFavorMessage(player, favor, amount, rollover);
+		Text message = deity.getFavorMessage(player, favor, amount, rollover);
 		if (message != null) player.addChatMessage(message, true);
 		deity.affectPlayer(player, favor, amount, rollover);
 	}
@@ -133,7 +131,7 @@ public class FavorManager {
 		PlayerData.markDirty(player);
 		if (passive) return;
 		boolean rollover = Math.abs(amount) >= 1;
-		Component message = deity.getFavorMessage(player, favor, amount, rollover);
+		Text message = deity.getFavorMessage(player, favor, amount, rollover);
 		if (message != null) player.addChatMessage(message, true);
 		deity.affectPlayer(player, favor, amount, rollover);
 	}

@@ -2,6 +2,7 @@ package io.github.cottonmc.witchcraft.recipe;
 
 import io.github.cottonmc.cotton.cauldron.Cauldron;
 import io.github.cottonmc.cotton.cauldron.CauldronBehavior;
+import io.github.cottonmc.libcd.tweaker.Tweaker;
 import io.github.cottonmc.witchcraft.Witchcraft;
 import io.github.cottonmc.witchcraft.item.WitchcraftItems;
 import net.minecraft.block.BlockState;
@@ -55,6 +56,7 @@ public class WitchcraftRecipes {
 					ctx.getWorld().playSound(null, ctx.getPos(), SoundEvents.BLOCK_NETHER_WART_BREAK, SoundCategory.BLOCKS, 1.0f, 1.0f);
 				})
 		);
+		Tweaker.addAssistant("WitchcraftRecipeTweaker", WitchcraftRecipeTweaker.INSTANCE);
 	}
 
 	public static boolean isFireUnder(World world, BlockPos pos) {

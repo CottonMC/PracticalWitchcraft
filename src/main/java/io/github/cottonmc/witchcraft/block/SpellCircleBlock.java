@@ -53,7 +53,7 @@ public class SpellCircleBlock extends Block implements BlockEntityProvider {
 			else if (stack.getItem() == WitchcraftItems.BOTTLED_PIXIE) {
 				ItemStack bottle = new ItemStack(Items.GLASS_BOTTLE);
 				if (!player.isCreative()) {
-					if (stack.getAmount() == 1) player.setStackInHand(hand, bottle);
+					if (stack.getCount() == 1) player.setStackInHand(hand, bottle);
 					else if (!player.inventory.insertStack(bottle)) {
 						ItemEntity entity = player.dropItem(bottle, false);
 						world.spawnEntity(entity);

@@ -2,16 +2,16 @@ package io.github.cottonmc.witchcraft.deity;
 
 import io.github.cottonmc.cotton.registry.CommonTags;
 import io.github.cottonmc.witchcraft.effect.WitchcraftEffects;
-import net.minecraft.ChatFormat;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.stat.Stat;
 import net.minecraft.stat.Stats;
 import net.minecraft.tag.ItemTags;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import java.util.Map;
 
 public class NatureDeity extends Deity {
 	public NatureDeity() {
-		super(DeityCharacter.FORGIVING, ChatFormat.GREEN);
+		super(DeityCharacter.FORGIVING, Formatting.GREEN);
 	}
 
 	@Override
@@ -52,15 +52,15 @@ public class NatureDeity extends Deity {
 
 	@Nullable
 	@Override
-	public Component getFavorMessage(PlayerEntity player, float currentFavor, float changeAmount, boolean intRollover) {
+	public Text getFavorMessage(PlayerEntity player, float currentFavor, float changeAmount, boolean intRollover) {
 		if (intRollover) {
 			if (currentFavor <= -40) {
-				return new TranslatableComponent("msg.witchcraft.nature.kill", getName(player).getFormattedText());
+				return new TranslatableText("msg.witchcraft.nature.kill", getName(player).asFormattedString());
 			}
 			if (changeAmount > 0) {
-				return new TranslatableComponent("msg.witchcraft.favor.gain", getName(player).getFormattedText());
+				return new TranslatableText("msg.witchcraft.favor.gain", getName(player).asFormattedString());
 			} else if (changeAmount < 0) {
-				return new TranslatableComponent("msg.witchcraft.favor.lose", getName(player).getFormattedText());
+				return new TranslatableText("msg.witchcraft.favor.lose", getName(player).asFormattedString());
 			}
 		}
 		return null;

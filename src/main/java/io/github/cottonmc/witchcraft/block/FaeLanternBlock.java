@@ -9,13 +9,13 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.state.StateFactory;
-import net.minecraft.state.property.IntegerProperty;
+import net.minecraft.state.property.IntProperty;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -25,7 +25,7 @@ import net.minecraft.world.World;
 import java.util.Random;
 
 public class FaeLanternBlock extends LanternBlock implements BlockEntityProvider {
-	public static final IntegerProperty PIXIES = IntegerProperty.create("pixies", 0, 7);
+	public static final IntProperty PIXIES = IntProperty.of("pixies", 0, 7);
 
 	public FaeLanternBlock() {
 		super(FabricBlockSettings.of(Material.METAL).strength(3.5F, 3.5F).breakByTool(FabricToolTags.PICKAXES).sounds(BlockSoundGroup.LANTERN).ticksRandomly().build());
@@ -48,20 +48,20 @@ public class FaeLanternBlock extends LanternBlock implements BlockEntityProvider
 		int pixies = state.get(PIXIES);
 		ItemStack stack = player.getStackInHand(hand);
 		if (stack.isEmpty()) {
-			TranslatableComponent message = new TranslatableComponent("msg.witchcraft.fae.none");
+			TranslatableText message = new TranslatableText("msg.witchcraft.fae.none");
 			switch(pixies) {
 				case 1:
-					message = new TranslatableComponent("msg.witchcraft.fae.one");
+					message = new TranslatableText("msg.witchcraft.fae.one");
 					break;
 				case 2:
 				case 3:
 				case 4:
-					message = new TranslatableComponent("msg.witchcraft.fae.few");
+					message = new TranslatableText("msg.witchcraft.fae.few");
 					break;
 				case 5:
 				case 6:
 				case 7:
-					message = new TranslatableComponent("msg.witchcraft.fae.many");
+					message = new TranslatableText("msg.witchcraft.fae.many");
 				default:
 					break;
 			}
@@ -71,7 +71,7 @@ public class FaeLanternBlock extends LanternBlock implements BlockEntityProvider
 			if (!player.abilities.creativeMode) {
 				ItemStack bottledPixie = new ItemStack(WitchcraftItems.BOTTLED_PIXIE);
 				player.incrementStat(Stats.USE_CAULDRON);
-				stack.subtractAmount(1);
+				stack.decrement(1);
 				if (stack.isEmpty()) {
 					player.setStackInHand(hand, bottledPixie);
 				} else if (!player.inventory.insertStack(bottledPixie)) {

@@ -1,17 +1,15 @@
 package io.github.cottonmc.witchcraft.deity;
 
-import net.minecraft.ChatFormat;
-import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.stat.Stat;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,14 +19,14 @@ public abstract class Deity {
 	private Map<Stat, Float> favors = new HashMap<>();
 	private Map<Stat, Float> disfavors = new HashMap<>();
 	private DeityCharacter character;
-	private ChatFormat nameFormat;
+	private Formatting nameFormat;
 
 	/**
 	 * Deities are special beings, so They can optionally be given a ChatFormat to make their name appear special.
 	 * @param character The personality of the Deity.
 	 * @param nameFormat The ChatFormat to format the Deity's name with.
 	 */
-	public Deity(DeityCharacter character, ChatFormat nameFormat) {
+	public Deity(DeityCharacter character, Formatting nameFormat) {
 		this.character = character;
 		this.nameFormat = nameFormat;
 	}
@@ -55,18 +53,18 @@ public abstract class Deity {
 	 * Used to get a Deity's formatted/translated name.
 	 * Call this only; do not override.
 	 * @param player The player to check getNameSubkey for, or null if not in a player-focused context.
-	 * @return a TranslatableComponent of the Deity's name.
+	 * @return a TranslatableText of the Deity's name.
 	 */
-	public Component getName(@Nullable PlayerEntity player) {
+	public Text getName(@Nullable PlayerEntity player) {
 		Identifier id = Pantheon.DEITIES.getId(this);
-		if (id == null) return new TextComponent("■■■■■");
+		if (id == null) return new LiteralText("■■■■■");
 		String key = "deity." + id.getNamespace() + "." + id.getPath();
 		if (player != null) {
 			String subkey = getNameSubkey(player);
 			if (subkey != null && !subkey.equals("")) key += "." + subkey;
 		}
-		TranslatableComponent component = new TranslatableComponent(key);
-		if (nameFormat != null) component.applyFormat(nameFormat);
+		TranslatableText component = new TranslatableText(key);
+		if (nameFormat != null) component.formatted(nameFormat);
 		return component;
 	}
 
@@ -124,7 +122,7 @@ public abstract class Deity {
 	 * @return The message to send, or null for none.
 	 */
 	@Nullable
-	public abstract Component getFavorMessage(PlayerEntity player, float currentFavor, float changeAmount, boolean intRollover);
+	public abstract Text getFavorMessage(PlayerEntity player, float currentFavor, float changeAmount, boolean intRollover);
 
 	/**
 	 * Apply any effects to a player in reaction to a favor change from this Deity.

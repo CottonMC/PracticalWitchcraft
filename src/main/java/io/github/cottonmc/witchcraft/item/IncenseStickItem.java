@@ -7,7 +7,7 @@ public class IncenseStickItem extends Item {
 	private IncenseAction action;
 
 	public IncenseStickItem(IncenseAction action) {
-		super(new Item.Settings().itemGroup(WitchcraftItems.WITCHCRAFT_GROUP));
+		super(new Item.Settings().group(WitchcraftItems.WITCHCRAFT_GROUP));
 		this.action = action;
 	}
 

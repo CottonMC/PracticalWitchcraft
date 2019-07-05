@@ -138,7 +138,7 @@ public class StoneCauldronBlock extends BlockWithEntity implements AttributeProv
 						}
 					}
 				} else if (!stack.isEmpty()) {
-					if (cauldron.addItem(stack)) stack.setAmount(0);
+					if (cauldron.addItem(stack)) stack.setCount(0);
 				}
 			}
 			return true;

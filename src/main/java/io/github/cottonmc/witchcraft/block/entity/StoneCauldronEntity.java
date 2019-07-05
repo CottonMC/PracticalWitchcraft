@@ -42,7 +42,7 @@ public class StoneCauldronEntity extends BlockEntity implements Tickable, BlockE
 
 	public void craft() {
 		for (ItemStack stack : previousItems) {
-			if (!stack.isEmpty()) stack.subtractAmount(1);
+			if (!stack.isEmpty()) stack.decrement(1);
 		}
 		markDirty();
 	}

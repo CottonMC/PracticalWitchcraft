@@ -52,7 +52,7 @@ public class IncenseBurnerBlock extends Block implements BlockEntityProvider {
 			//eventually change to IncenseItem or whatever
 		} else if (handStack.getItem() instanceof IncenseStickItem) {
 			burner.setIncense(handStack);
-			handStack.subtractAmount(1);
+			handStack.decrement(1);
 			world.playSound(null, pos, SoundEvents.ENTITY_ITEM_FRAME_ADD_ITEM, SoundCategory.BLOCKS, 1.0f, 1.0f);
 			return true;
 		}

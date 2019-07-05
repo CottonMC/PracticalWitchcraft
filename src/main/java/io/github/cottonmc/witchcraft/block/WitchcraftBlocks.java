@@ -59,7 +59,7 @@ public class WitchcraftBlocks {
 
 	public static Block register(String name, Block block, ItemGroup tab) {
 		Registry.register(Registry.BLOCK, new Identifier(Witchcraft.MODID, name), block);
-		BlockItem item = new BlockItem(block, new Item.Settings().itemGroup(tab));
+		BlockItem item = new BlockItem(block, new Item.Settings().group(tab));
 		WitchcraftItems.register(name, item);
 		return block;
 	}

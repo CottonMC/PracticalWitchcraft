@@ -8,7 +8,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 
 public class FavorDebugItem extends Item {
 	public FavorDebugItem() {
-		super(new Item.Settings().stackSize(1));
+		super(new Item.Settings().maxCount(1));
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class FavorDebugItem extends Item {
 		Deity deity = Pantheon.DEITIES.get(id);
 		if (tag.containsKey("Reset")) {
 			FavorManager.resetFavor(player, deity);
-			player.addChatMessage(new TextComponent("Reset favor"), true);
+			player.addChatMessage(new LiteralText("Reset favor"), true);
 			return new TypedActionResult<>(ActionResult.SUCCESS, stack);
 		}
 		float changeAmount = tag.getFloat("Amount");

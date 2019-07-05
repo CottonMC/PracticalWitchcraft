@@ -2,7 +2,6 @@ package io.github.cottonmc.witchcraft.client;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import io.github.cottonmc.repackage.blue.endless.jankson.annotation.Nullable;
 import io.github.cottonmc.witchcraft.spell.ModifierPattern;
 import io.github.cottonmc.witchcraft.spell.Spell;
 import io.github.cottonmc.witchcraft.spell.SpellPatterns;
@@ -15,6 +14,7 @@ import net.minecraft.client.texture.TextureCache;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.SystemUtil;
 
+import javax.annotation.Nullable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;

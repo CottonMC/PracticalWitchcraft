@@ -26,13 +26,13 @@ public class DecayTouchStatusEffect extends StatusEffect {
 			PlayerInventory inv = player.inventory;
 			for (int i = 0; i < inv.getInvSize(); i++) {
 				ItemStack stack = inv.getInvStack(i);
-				int amount = stack.getAmount();
+				int amount = stack.getCooldown();
 				if (stack.getItem() instanceof BlockItem) {
 					Block block = ((BlockItem)stack.getItem()).getBlock();
 					if (block instanceof PlantBlock && block != Blocks.DEAD_BUSH) {
 						if (amount > 16) {
 							ItemStack bushes = new ItemStack(Items.DEAD_BUSH, 16);
-							stack.subtractAmount(16);
+							stack.decrement(16);
 							if (!inv.insertStack(bushes)) {
 								player.dropStack(bushes);
 							}
