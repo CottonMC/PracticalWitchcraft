@@ -65,6 +65,6 @@ public class WitchcraftBlocks {
 	}
 
 	public static BlockEntityType register(String name, Supplier<BlockEntity> be, Block...blocks) {
-		return Registry.register(Registry.BLOCK_ENTITY, new Identifier(Witchcraft.MODID, name), BlockEntityType.Builder.create(be, blocks).build(null));
+		return Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Witchcraft.MODID, name), BlockEntityType.Builder.create(be, blocks).build(null));
 	}
 }

@@ -27,7 +27,7 @@ public class CauldronRecipeSerializer implements RecipeSerializer<CauldronRecipe
 	@Override
 	public CauldronRecipe read(Identifier id, PacketByteBuf buf) {
 		int ingredientSize = buf.readVarInt();
-		DefaultedList<Ingredient> ingredients = DefaultedList.create(ingredientSize, Ingredient.EMPTY);
+		DefaultedList<Ingredient> ingredients = DefaultedList.ofSize(ingredientSize, Ingredient.EMPTY);
 
 		for(int i = 0; i < ingredients.size(); i++) {
 			ingredients.set(i, Ingredient.fromPacket(buf));
@@ -53,7 +53,7 @@ public class CauldronRecipeSerializer implements RecipeSerializer<CauldronRecipe
 	}
 
 	private static DefaultedList<Ingredient> getIngredients(JsonArray json) {
-		DefaultedList<Ingredient> ingredients = DefaultedList.create();
+		DefaultedList<Ingredient> ingredients = DefaultedList.of();
 
 		for(int i = 0; i < json.size(); i++) {
 			Ingredient ingredient = Ingredient.fromJson(json.get(i));

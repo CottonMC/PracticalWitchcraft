@@ -21,7 +21,7 @@ public class WitchcraftNetworking {
 			ClientSidePacketRegistry.INSTANCE.register(REMOVE_EFFECT, ((packetContext, packetByteBuf) -> {
 				Identifier effectId = packetByteBuf.readIdentifier();
 				StatusEffect effect = Registry.STATUS_EFFECT.get(effectId);
-				packetContext.getPlayer().removePotionEffect(effect);
+				packetContext.getPlayer().removeStatusEffect(effect);
 			}));
 		}
 	}

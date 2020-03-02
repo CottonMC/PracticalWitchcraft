@@ -20,14 +20,14 @@ public class ImmunityStatusEffect extends WitchcraftStatusEffect {
 	public void applyUpdateEffect(LivingEntity entity, int ticks) {
 		for (StatusEffectInstance effect : entity.getStatusEffects()) {
 			if (effect.getEffectType() == StatusEffects.WITHER) {
-				//only clear Wither if it's got less than 5 seconds left, to prevent cheesing wither battles
-				if (effect.getDuration() <= 100) {
-					entity.removePotionEffect(StatusEffects.WITHER);
+				//only clear Wither if it's got less than 3 seconds left, to prevent cheesing wither battles
+				if (effect.getDuration() <= 60) {
+					entity.removeStatusEffect(StatusEffects.WITHER);
 				}
 			} else if (effect.getEffectType().getType() == StatusEffectType.HARMFUL
-					&& effect.getEffectType() != StatusEffects.BAD_OMEN) {
-				//don't make immunity clear out bad omens, you have to cleanse that specially
-				entity.removePotionEffect(effect.getEffectType());
+					&& effect.getEffectType() != WitchcraftEffects.FIZZLE) {
+				//don't make immunity clear out fizzle, you have to cleanse that specially
+				entity.removeStatusEffect(effect.getEffectType());
 			}
 		}
 	}

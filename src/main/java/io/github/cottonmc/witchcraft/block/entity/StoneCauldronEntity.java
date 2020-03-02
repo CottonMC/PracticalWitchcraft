@@ -29,7 +29,7 @@ public class StoneCauldronEntity extends BlockEntity implements Tickable, BlockE
 	static VoxelShape ABOVE_SHAPE = Block.createCuboidShape(0.0D, 16.0D, 0.0D, 16.0D, 32.0D, 16.0D);
 
 	public SimpleFixedFluidInv fluid = new SimpleFixedFluidInv(1, FluidVolume.BUCKET);
-	public DefaultedList<ItemStack> previousItems = DefaultedList.create(8, ItemStack.EMPTY);
+	public DefaultedList<ItemStack> previousItems = DefaultedList.ofSize(8, ItemStack.EMPTY);
 
 	public StoneCauldronEntity() {
 		super(WitchcraftBlocks.STONE_CAULDRON_BE);

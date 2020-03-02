@@ -18,16 +18,17 @@
     ],
     "client": [
       "io.github.cottonmc.witchcraft.WitchcraftClient"
+    ],
+    "libcd": [
+      "io.github.cottonmc.witchcraft.compat.libcd.LibCDInit"
     ]
   },
   "mixins": [
-    "witchcraft.common.json"
+    "mixins.witchcraft.json"
   ],
   "requires": {
     "fabricloader": ">=0.4.0",
     "fabric": "*",
-    "cotton": ">=0.6.9",
-    "libblockattributes": ">=0.3.4",
-    "skillcheck": "*"
+    "cotton": ">=1.0.2"
   }
 }

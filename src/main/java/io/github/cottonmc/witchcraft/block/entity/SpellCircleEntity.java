@@ -61,8 +61,8 @@ public class SpellCircleEntity extends BlockEntity implements BlockEntityClientS
 	@Override
 	public void fromTag(CompoundTag tag) {
 		super.fromTag(tag);
-		if (tag.containsKey("Spell", NbtType.COMPOUND)) this.spell = Spell.fromTag(tag.getCompound("Spell"));
-		if (tag.containsKey("ActivatorMost", NbtType.LONG)) this.activator = world.getPlayerByUuid(tag.getUuid("Activator"));
+		if (tag.contains("Spell", NbtType.COMPOUND)) this.spell = Spell.fromTag(tag.getCompound("Spell"));
+		if (tag.contains("ActivatorMost", NbtType.LONG)) this.activator = world.getPlayerByUuid(tag.getUuid("Activator"));
 		hasPixie = tag.getBoolean("HasPixie");
 	}
 

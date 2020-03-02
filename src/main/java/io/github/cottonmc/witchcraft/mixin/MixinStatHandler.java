@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinStatHandler {
 
 	@Inject(method = "increaseStat", at = @At("HEAD"))
-	private void affectKarma(PlayerEntity player, Stat stat, int amount, CallbackInfo ci) {
+	private void affectKarma(PlayerEntity player, Stat<?> stat, int amount, CallbackInfo ci) {
 		Pantheon.DEITIES.stream().forEach(deity -> deity.update(player, stat, amount));
 	}
 

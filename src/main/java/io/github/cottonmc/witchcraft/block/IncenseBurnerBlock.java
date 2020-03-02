@@ -11,8 +11,10 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -32,36 +34,36 @@ public class IncenseBurnerBlock extends Block implements BlockEntityProvider {
 	}
 
 	@Override
-	public boolean activate(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		ItemStack handStack = player.getStackInHand(hand);
 		BlockEntity be = world.getBlockEntity(pos);
-		if (world.isClient || !(be instanceof IncenseBurnerEntity)) return true;
+		if (world.isClient || !(be instanceof IncenseBurnerEntity)) return ActionResult.SUCCESS;
 		IncenseBurnerEntity burner = (IncenseBurnerEntity) be;
 		//don't do anything if incense is already burning!
 		if (world.getBlockTickScheduler().isScheduled(pos, WitchcraftBlocks.INCENSE_BURNER)
-				|| world.getBlockTickScheduler().isTicking(pos, WitchcraftBlocks.INCENSE_BURNER)) return true;
+				|| world.getBlockTickScheduler().isTicking(pos, WitchcraftBlocks.INCENSE_BURNER)) return ActionResult.SUCCESS;
 		if (burner.hasIncense()) {
 			if (handStack.getItem() == Items.FLINT_AND_STEEL) {
 				burner.light();
 				world.playSound(null, pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0f, 1.0f);
-				return true;
+				return ActionResult.SUCCESS;
 			} else if (handStack.isEmpty()) {
 				player.setStackInHand(hand, burner.removeIncense());
-				return true;
+				return ActionResult.SUCCESS;
 			}
 			//eventually change to IncenseItem or whatever
 		} else if (handStack.getItem() instanceof IncenseStickItem) {
 			burner.setIncense(handStack);
 			handStack.decrement(1);
 			world.playSound(null, pos, SoundEvents.ENTITY_ITEM_FRAME_ADD_ITEM, SoundCategory.BLOCKS, 1.0f, 1.0f);
-			return true;
+			return ActionResult.SUCCESS;
 		}
-		if (handStack.getItem() == Items.FLINT_AND_STEEL) return true;
-		return false;
+		if (handStack.getItem() == Items.FLINT_AND_STEEL) return ActionResult.SUCCESS;
+		return ActionResult.FAIL;
 	}
 
 	@Override
-	public void onScheduledTick(BlockState state, World world, BlockPos pos, Random rand) {
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random rand) {
 		IncenseBurnerEntity be = (IncenseBurnerEntity)world.getBlockEntity(pos);
 		if (be != null) {
 			be.purge();

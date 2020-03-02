@@ -2,9 +2,9 @@ package io.github.cottonmc.witchcraft.client;
 
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.platform.TextureUtil;
 import net.minecraft.client.texture.AbstractTexture;
 import net.minecraft.client.texture.NativeImage;
+import net.minecraft.client.texture.TextureUtil;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
@@ -33,7 +33,7 @@ public class SpellTexture extends AbstractTexture {
 			Throwable t1 = null;
 
 			try {
-				NativeImage fileImage = NativeImage.fromInputStream(fileRes.getInputStream());
+				NativeImage fileImage = NativeImage.read(fileRes.getInputStream());
 				Throwable t2 = null;
 
 				try {
@@ -50,14 +50,14 @@ public class SpellTexture extends AbstractTexture {
 								Throwable t4 = null;
 
 								try {
-									NativeImage patternImage = NativeImage.fromInputStream(patternRes.getInputStream());
+									NativeImage patternImage = NativeImage.read(patternRes.getInputStream());
 									Throwable t5 = null;
 
 									try {
 										if (patternImage.getWidth() == convertedImage.getWidth() && patternImage.getHeight() == convertedImage.getHeight()) {
 											for(int j = 0; j < patternImage.getHeight(); ++j) {
 												for(int k = 0; k < patternImage.getWidth(); ++k) {
-													int patternColor = patternImage.getPixelRGBA(k, j);
+													int patternColor = patternImage.getPixelRgba(k, j);
 													if ((patternColor & -16777216) != 0) {
 														int convertedColor = (patternColor & 255) << 24 & -16777216;
 														convertedImage.blendPixel(k, j, convertedColor);

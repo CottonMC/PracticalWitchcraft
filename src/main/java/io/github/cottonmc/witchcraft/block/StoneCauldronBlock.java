@@ -3,10 +3,10 @@ package io.github.cottonmc.witchcraft.block;
 import alexiil.mc.lib.attributes.AttributeList;
 import alexiil.mc.lib.attributes.AttributeProvider;
 import alexiil.mc.lib.attributes.Simulation;
-import alexiil.mc.lib.attributes.fluid.FluidProviderItem;
+import alexiil.mc.lib.attributes.fluid.FluidAttributes;
+import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
-import alexiil.mc.lib.attributes.fluid.volume.NormalFluidVolume;
-import alexiil.mc.lib.attributes.misc.Ref;
+import io.github.cottonmc.witchcraft.component.WitchcraftFluidVolume;
 import io.github.cottonmc.witchcraft.item.WitchcraftItems;
 import io.github.cottonmc.witchcraft.recipe.CauldronInventoryWrapper;
 import io.github.cottonmc.witchcraft.recipe.CauldronRecipe;
@@ -32,6 +32,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.BooleanBiFunction;
 import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Hand;
@@ -50,8 +51,8 @@ public class StoneCauldronBlock extends BlockWithEntity implements AttributeProv
 	public static final VoxelShape RAY_TRACE_SHAPE = createCuboidShape(2.0D, 4.0D, 2.0D, 14.0D, 16.0D, 14.0D);
 	public static final VoxelShape OUTLINE_SHAPE = VoxelShapes.combineAndSimplify(VoxelShapes.fullCube(),
 			VoxelShapes.union(createCuboidShape(0.0D, 0.0D, 4.0D, 16.0D, 3.0D, 12.0D),
-					new VoxelShape[]{createCuboidShape(4.0D, 0.0D, 0.0D, 12.0D, 3.0D, 16.0D),
-							createCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 3.0D, 14.0D), RAY_TRACE_SHAPE}), BooleanBiFunction.ONLY_FIRST);
+					createCuboidShape(4.0D, 0.0D, 0.0D, 12.0D, 3.0D, 16.0D),
+					createCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 3.0D, 14.0D), RAY_TRACE_SHAPE), BooleanBiFunction.ONLY_FIRST);
 
 	public StoneCauldronBlock() {
 		super(FabricBlockSettings.of(Material.STONE).breakByTool(FabricToolTags.PICKAXES).strength(6.0f, 6.0f).build());
@@ -73,18 +74,13 @@ public class StoneCauldronBlock extends BlockWithEntity implements AttributeProv
 	}
 
 	@Override
-	public BlockRenderLayer getRenderLayer() {
-		return BlockRenderLayer.CUTOUT;
-	}
-
-	@Override
 	public BlockEntity createBlockEntity(BlockView view) {
 		return new StoneCauldronEntity();
 	}
 
 	@Override
-	public boolean activate(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if (world.isClient() || !(world.getBlockEntity(pos) instanceof StoneCauldronEntity)) return true;
+	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+		if (world.isClient() || !(world.getBlockEntity(pos) instanceof StoneCauldronEntity)) return ActionResult.SUCCESS;
 		ItemStack stack = player.getStackInHand(hand);
 		StoneCauldronEntity cauldron = (StoneCauldronEntity) world.getBlockEntity(pos);
 		FluidVolume fluid = cauldron.fluid.getInvFluid(0);
@@ -94,33 +90,32 @@ public class StoneCauldronBlock extends BlockWithEntity implements AttributeProv
 				player.setStackInHand(hand, cauldron.previousItems.get(index));
 				cauldron.previousItems.set(index, ItemStack.EMPTY);
 			}
-			return true;
+			return ActionResult.SUCCESS;
 		}
 		Item item = stack.getItem();
 		if (item instanceof BucketItem) {
-			if (item == Items.BUCKET && fluid.getAmount() >= FluidVolume.BUCKET) {
+			if (item == Items.BUCKET && fluid.getAmount_F().isGreaterThan(FluidAmount.BUCKET)) {
 				if (!player.isCreative()) {
-					Ref<ItemStack> refStack = new Ref<>(stack);
-					((FluidProviderItem) item).fill(refStack, new Ref<>(fluid));
-					player.setStackInHand(hand, refStack.obj);
+					FluidAttributes.INSERTABLE.get(stack).insert(fluid);
+					player.setStackInHand(hand, stack);
 				}
 				drain(world, pos, state, fluid.getRawFluid(), 3);
 				SoundEvent event = fluid.getRawFluid() == Fluids.LAVA? SoundEvents.ITEM_BUCKET_FILL_LAVA : SoundEvents.ITEM_BUCKET_FILL;
 				world.playSound(null, pos, event, SoundCategory.BLOCKS, 1.0f, 1.0f);
-				return true;
+				return ActionResult.SUCCESS;
 			}
 			else if (fluid.isEmpty()) {
 				if (!player.isCreative()) player.setStackInHand(hand, new ItemStack(Items.BUCKET));
-				cauldron.fluid.setInvFluid(0, ((FluidProviderItem)item).drain(new Ref<>(stack)), Simulation.ACTION);
+				cauldron.fluid.setInvFluid(0, FluidAttributes.EXTRACTABLE.get(stack).extract(FluidAmount.BUCKET), Simulation.ACTION);
 				SoundEvent event = item == Items.LAVA_BUCKET? SoundEvents.ITEM_BUCKET_EMPTY_LAVA : SoundEvents.ITEM_BUCKET_EMPTY;
 				world.playSound(null, pos, event, SoundCategory.BLOCKS, 1.0f, 1.0f);
-				return true;
+				return ActionResult.SUCCESS;
 			}
 		}
 		if (world.getBlockState(pos.down()).getBlock() == Blocks.CAMPFIRE && !fluid.isEmpty()) {
 			if (fluid.getRawFluid() == Fluids.WATER) {
 				if (stack.getItem() == WitchcraftItems.BROOMSTICK) {
-					if (fluid.getAmount() >= FluidVolume.BOTTLE) {
+					if (fluid.getAmount_F().isGreaterThan(FluidAmount.BOTTLE)) {
 						CauldronInventoryWrapper wrapper = new CauldronInventoryWrapper(cauldron.previousItems, WitchcraftRecipes.isFireUnder(world, pos));
 						Optional<CauldronRecipe> opt = world.getRecipeManager().getFirstMatch(WitchcraftRecipes.CAULDRON, wrapper, world);
 						if (opt.isPresent()) {
@@ -141,27 +136,29 @@ public class StoneCauldronBlock extends BlockWithEntity implements AttributeProv
 					if (cauldron.addItem(stack)) stack.setCount(0);
 				}
 			}
-			return true;
+			return ActionResult.SUCCESS;
 		}
-		CauldronContext ctx = new CauldronContext(world, pos, state, fluid.getAmount() / FluidVolume.BOTTLE, fluid.getRawFluid(), cauldron.previousItems, player, hand, player.getStackInHand(hand));
+		CauldronContext ctx = new CauldronContext(world, pos, state, fluid.getAmount_F().asInt(3), fluid.getRawFluid(), cauldron.previousItems, player, hand, player.getStackInHand(hand));
 		for (Predicate<CauldronContext> pred : CauldronBehavior.BEHAVIORS.keySet()) {
 			if (pred.test(ctx)) {
 				CauldronBehavior behavior = CauldronBehavior.BEHAVIORS.get(pred);
 				behavior.react(ctx);
 				cauldron.craft();
-				return true;
+				return ActionResult.SUCCESS;
 			}
 		}
-		return super.activate(state, world, pos, player, hand, hit);
+		return super.onUse(state, world, pos, player, hand, hit);
 	}
 
 	@Override
 	public boolean fill(World world, BlockPos pos, BlockState state, Fluid fluid, int bottles) {
-		int amount = FluidVolume.BOTTLE * bottles;
 		StoneCauldronEntity cauldron = (StoneCauldronEntity)world.getBlockEntity(pos);
 		FluidVolume vol = cauldron.fluid.getInvFluid(0);
-		if (vol.getRawFluid().equals(fluid) && vol.getAmount() + amount <= FluidVolume.BUCKET) {
-			vol.merge(NormalFluidVolume.create(vol.getFluidKey(), amount), Simulation.ACTION);
+		//copy fluid volume because it's mutable
+		FluidAmount sum = FluidAmount.of(vol.getAmount_F().whole, vol.getAmount_F().numerator, vol.getAmount_F().denominator);
+		sum.add(FluidAmount.of(bottles, 3));
+		if (vol.getRawFluid().equals(fluid) && sum.isLessThanOrEqual(FluidAmount.BUCKET)) {
+			vol.merge(new WitchcraftFluidVolume(vol.getFluidKey(), FluidAmount.of(bottles, 3)), Simulation.ACTION);
 			cauldron.markDirty();
 			return true;
 		}
@@ -194,7 +191,7 @@ public class StoneCauldronBlock extends BlockWithEntity implements AttributeProv
 		Hand hand;
 		if (player == null) hand = null;
 		else hand = player.getActiveHand();
-		return new CauldronContext(world, pos, state, fluid.getAmount() / FluidVolume.BOTTLE, fluid.getRawFluid(), cauldron.previousItems, player, hand, stack);
+		return new CauldronContext(world, pos, state, fluid.getAmount_F().asInt(3), fluid.getRawFluid(), cauldron.previousItems, player, hand, stack);
 	}
 
 	public static int getLastFilledSlot(DefaultedList<ItemStack> slots) {

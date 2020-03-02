@@ -67,14 +67,14 @@ public class Spell {
 		if (!targeters.isEmpty()) {
 			ListTag targeterList = new ListTag();
 			for (int i = 0; i < targeters.size(); i++) {
-				targeterList.addTag(i, new StringTag(SpellPatterns.getTargeterId(targeters.get(i)).toString()));
+				targeterList.addTag(i, StringTag.of(SpellPatterns.getTargeterId(targeters.get(i)).toString()));
 			}
 			tag.put("Targeters", targeterList);
 		}
 		if (!modifiers.isEmpty()) {
 			ListTag modifierList = new ListTag();
 			for (int i = 0; i < modifiers.size(); i++) {
-				modifierList.addTag(i, new StringTag(SpellPatterns.getModifierId(modifiers.get(i)).toString()));
+				modifierList.addTag(i, StringTag.of(SpellPatterns.getModifierId(modifiers.get(i)).toString()));
 			}
 			tag.put("Modifiers", modifierList);
 		}
@@ -87,21 +87,21 @@ public class Spell {
 		List<TargeterPattern> targeters = new ArrayList<>();
 		List<ModifierPattern> modifiers = new ArrayList<>();
 		int performances = 0;
-		if (tag.containsKey("Targeters", NbtType.LIST)) {
+		if (tag.contains("Targeters", NbtType.LIST)) {
 			ListTag targeterList = tag.getList("Targeters", NbtType.STRING);
 			for (int i = 0; i < targeterList.size(); i++) {
 				String id = targeterList.getString(i);
 				targeters.add(SpellPatterns.getTargeter(new Identifier(id)));
 			}
 		}
-		if (tag.containsKey("Modifiers", NbtType.LIST)) {
+		if (tag.contains("Modifiers", NbtType.LIST)) {
 			ListTag modifierList = tag.getList("Modifiers", NbtType.STRING);
 			for (int i = 0; i < modifierList.size(); i++) {
 				String id = modifierList.getString(i);
 				modifiers.add(SpellPatterns.getModifier(new Identifier(id)));
 			}
 		}
-		if (tag.containsKey("Performances", NbtType.INT)) performances = tag.getInt("Performances");
+		if (tag.contains("Performances", NbtType.INT)) performances = tag.getInt("Performances");
 		return new Spell(action, targeters, modifiers, performances);
 	}
 }

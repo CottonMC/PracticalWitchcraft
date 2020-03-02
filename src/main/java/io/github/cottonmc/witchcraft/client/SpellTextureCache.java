@@ -10,9 +10,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.texture.MissingSprite;
-import net.minecraft.client.texture.TextureCache;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.SystemUtil;
 
 import javax.annotation.Nullable;
 import java.util.Iterator;
@@ -53,7 +51,7 @@ public class SpellTextureCache {
 				Entry entry = this.cacheMap.get(prefix);
 				if (entry == null) {
 					if (this.cacheMap.size() >= 256 && !this.removeOldEntries()) {
-						return TextureCache.DEFAULT_BANNER;
+//						return TextureCache.DEFAULT_BANNER;
 					}
 
 					List<TargeterPattern> targeters = spell.getTargeters();
@@ -76,7 +74,7 @@ public class SpellTextureCache {
 					this.cacheMap.put(prefix, entry);
 				}
 
-				entry.lastRequestTimeMillis = SystemUtil.getMeasuringTimeMs();
+//				entry.lastRequestTimeMillis = SystemUtil.getMeasuringTimeMs();
 				return entry.filename;
 			} else {
 				return MissingSprite.getMissingSpriteId();
@@ -84,7 +82,8 @@ public class SpellTextureCache {
 		}
 
 		private boolean removeOldEntries() {
-			long millis = SystemUtil.getMeasuringTimeMs();
+			long millis = 5001L;
+//			long millis = SystemUtil.getMeasuringTimeMs();
 			Iterator itr = this.cacheMap.keySet().iterator();
 
 			Entry entry;

@@ -9,13 +9,15 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
-import net.minecraft.state.StateFactory;
+import net.minecraft.state.StateManager;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -33,7 +35,7 @@ public class FaeLanternBlock extends LanternBlock implements BlockEntityProvider
 	}
 
 	@Override
-	public void onScheduledTick(BlockState state, World world, BlockPos pos, Random rand) {
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random rand) {
 		int pixies = state.get(PIXIES);
 		if (pixies < 7 && rand.nextInt(8) == 0) {
 			world.setBlockState(pos, state.with(PIXIES, pixies + 1));
@@ -43,8 +45,8 @@ public class FaeLanternBlock extends LanternBlock implements BlockEntityProvider
 	}
 
 	@Override
-	public boolean activate(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if (world.isClient) return true;
+	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+		if (world.isClient) return ActionResult.SUCCESS;
 		int pixies = state.get(PIXIES);
 		ItemStack stack = player.getStackInHand(hand);
 		if (stack.isEmpty()) {
@@ -80,7 +82,7 @@ public class FaeLanternBlock extends LanternBlock implements BlockEntityProvider
 			}
 			world.setBlockState(pos, state.with(PIXIES, pixies - 1));
 		}
-		return super.activate(state, world, pos, player, hand, hit);
+		return super.onUse(state, world, pos, player, hand, hit);
 	}
 
 	@Override
@@ -90,7 +92,7 @@ public class FaeLanternBlock extends LanternBlock implements BlockEntityProvider
 	}
 
 	@Override
-	protected void appendProperties(StateFactory.Builder<Block, BlockState> builder) {
+	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
 		builder.add(PIXIES);
 	}

@@ -25,11 +25,11 @@ public class WitchcraftItems {
 			StatusEffectInstance inst = player.getStatusEffect(WitchcraftEffects.FIZZLE);
 			int level = inst.getAmplifier();
 			int time = inst.getDuration();
-			player.removePotionEffect(WitchcraftEffects.FIZZLE);
+			player.removeStatusEffect(WitchcraftEffects.FIZZLE);
 			WitchcraftNetworking.removeEffect((ServerPlayerEntity) player, WitchcraftEffects.FIZZLE);
 			if (level != 0) {
 				StatusEffectInstance newInst = new StatusEffectInstance(WitchcraftEffects.FIZZLE, time, level - 1, false, false, true);
-				player.addPotionEffect(newInst);
+				player.addStatusEffect(newInst);
 				((ServerPlayerEntity) player).networkHandler.sendPacket(new EntityPotionEffectS2CPacket(player.getEntityId(), newInst));
 			}
 		}

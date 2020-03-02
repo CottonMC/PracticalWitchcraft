@@ -21,12 +21,12 @@ public abstract class MixinMilkBucket extends Item {
 	}
 
 	@Inject(method = "finishUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;clearPotionEffects()Z"), cancellable = true)
-	public void removeBadOmenClear(ItemStack stack, World world, LivingEntity user, CallbackInfoReturnable cir) {
+	public void removeBadOmenClear(ItemStack stack, World world, LivingEntity user, CallbackInfoReturnable<ItemStack> cir) {
 		//TODO: put in config
 		if (user.hasStatusEffect(WitchcraftEffects.FIZZLE)) {
 			StatusEffectInstance badOmen = user.getStatusEffect(WitchcraftEffects.FIZZLE);
-			user.clearPotionEffects();
-			user.addPotionEffect(badOmen);
+			user.clearStatusEffects();
+			user.addStatusEffect(badOmen);
 			cir.setReturnValue(stack.isEmpty() ? new ItemStack(Items.BUCKET) : stack);
 		}
 	}

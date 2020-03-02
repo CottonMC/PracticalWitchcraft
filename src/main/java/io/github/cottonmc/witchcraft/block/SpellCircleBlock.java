@@ -17,6 +17,8 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -33,10 +35,10 @@ public class SpellCircleBlock extends Block implements BlockEntityProvider {
 	}
 
 	@Override
-	public boolean activate(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if (!world.isClient && (world.getBlockEntity(pos) instanceof SpellCircleEntity)) {
 			if (world.getBlockTickScheduler().isScheduled(pos, WitchcraftBlocks.SPELL_CIRCLE)
-					|| world.getBlockTickScheduler().isTicking(pos, WitchcraftBlocks.SPELL_CIRCLE)) return true;
+					|| world.getBlockTickScheduler().isTicking(pos, WitchcraftBlocks.SPELL_CIRCLE)) return ActionResult.SUCCESS;
 			ItemStack stack = player.getStackInHand(hand);
 			SpellCircleEntity be = (SpellCircleEntity) world.getBlockEntity(pos);
 			if (be.hasPixie() && stack.getItem() == WitchcraftItems.BROOMSTICK) {
@@ -45,7 +47,7 @@ public class SpellCircleBlock extends Block implements BlockEntityProvider {
 					if (world.getRandom().nextInt(20) <= level) {
 						world.createExplosion(null, DamageSource.MAGIC, pos.getX(), pos.getY(), pos.getZ(), 3f, true, Explosion.DestructionType.NONE);
 						world.breakBlock(pos, false);
-						return true;
+						return ActionResult.SUCCESS;
 					}
 				}
 				be.beginSpell(player);
@@ -62,11 +64,11 @@ public class SpellCircleBlock extends Block implements BlockEntityProvider {
 				be.addPixie();
 			}
 		}
-		return true;
+		return ActionResult.SUCCESS;
 	}
 
 	@Override
-	public void onScheduledTick(BlockState state, World world, BlockPos pos, Random rad) {
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random rad) {
 		if (world.getBlockEntity(pos) instanceof SpellCircleEntity) {
 			((SpellCircleEntity)world.getBlockEntity(pos)).performSpell();
 		}
@@ -75,7 +77,7 @@ public class SpellCircleBlock extends Block implements BlockEntityProvider {
 	@Override
 	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		BlockEntity be = world.getBlockEntity(pos);
-		if (be instanceof SpellCircleEntity && stack.getOrCreateTag().containsKey("Spell", NbtType.COMPOUND)) {
+		if (be instanceof SpellCircleEntity && stack.getOrCreateTag().contains("Spell", NbtType.COMPOUND)) {
 			SpellCircleEntity circle = (SpellCircleEntity)be;
 			Spell spell = Spell.fromTag(stack.getTag().getCompound("Spell"));
 			circle.setSpell(spell);

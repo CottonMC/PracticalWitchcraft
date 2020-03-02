@@ -1,5 +1,6 @@
 package io.github.cottonmc.witchcraft.deity;
 
+import io.github.cottonmc.witchcraft.Witchcraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.stat.Stat;
 import net.minecraft.text.LiteralText;
@@ -11,13 +12,13 @@ import net.minecraft.util.Identifier;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * A deity of the world, which a player can pray to.
  */
 public abstract class Deity {
-	private Map<Stat, Float> favors = new HashMap<>();
-	private Map<Stat, Float> disfavors = new HashMap<>();
+	private Map<Stat<?>, Float> favors = new HashMap<>();
 	private DeityCharacter character;
 	private Formatting nameFormat;
 
@@ -44,9 +45,8 @@ public abstract class Deity {
 	 * @param action The stat being updated.
 	 * @param amount How many points the stat is being updated by.
 	 */
-	public void update(PlayerEntity player, Stat action, int amount) {
-		if (favors.containsKey(action)) FavorManager.shiftFavor(player, this, favors.get(action) * amount);
-		else if (disfavors.containsKey(action)) FavorManager.shiftFavor(player, this, disfavors.get(action) * amount * -1);
+	public void update(PlayerEntity player, Stat<?> action, int amount) {
+		if (favors.containsKey(action)) Witchcraft.DEITY_COMPONENT.get(player).shiftFavor(this, favors.get(action) * amount);
 	}
 
 	/**
@@ -90,28 +90,10 @@ public abstract class Deity {
 	 */
 	public void reload() {
 		favors.clear();
-		disfavors.clear();
+		favors.putAll(getFavors());
 	}
 
-	/**
-	 * Deities have various actions that will put a player in good favor with Them.
-	 * To support data-constructs like tags that are used for stats, Deities have their favors refreshed on /reload.
-	 * Call this inside the reload() method to add a Deity's favors.
-	 * @param favors A map of stats that will put a player in the Deity's good favor, along with how much favor should be accrued.
-	 */
-	public void addFavors(Map<Stat, Float> favors) {
-		this.favors.putAll(favors);
-	}
-
-	/**
-	 * Deities have various actions that will put a player in bad favor with Them.
-	 * To support data-constructs like tags that are used for stats, Deities have their disfavors refreshed on /reload.
-	 * Call this inside the reload() method to add a Deity's disfavors.
-	 * @param disfavors A map of stats that will put a player in the Deity's bad favor, along with how much favor should be lost.
-	 */
-	public void addDisfavors(Map<Stat, Float> disfavors) {
-		this.disfavors.putAll(disfavors);
-	}
+	public abstract Map<Stat<?>, Float> getFavors();
 
 	/**
 	 * Send a status message to a player in reaction to a favor change from this Deity.
